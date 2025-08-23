@@ -1,0 +1,114 @@
+# Cocotb simulation files
+sim_build/
+results.xml
+*.vcd
+*.fst
+*.ghw
+*.vpi
+*.so
+*.dll
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# Python virtual environment
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Waveform files (optional - uncomment if you don't want to track waveforms)
+# waveforms/
+# *.vcd
+# *.fst
+
+# Simulator-specific files
+# Icarus Verilog
+*.vvp
+*.lxt
+*.lxt2
+
+# ModelSim/Questa
+work/
+transcript
+vsim.wlf
+*.wlf
+modelsim.ini
+
+# Vivado
+*.jou
+*.log
+*.str
+*.xpr
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.srcs/
+
+# Verilator
+obj_dir/
+*.mk
+*.d
+
+# GTKWave save files
+*.gtkw
+
+# OS-specific files
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.cproject
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+# Log files
+*.log
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Documentation builds
+docs/_build/
+docs/build/
+
+# Custom additions for your project
+# Add any project-specific files/directories to ignore below
