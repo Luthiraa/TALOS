@@ -18,7 +18,8 @@ export PYTHONPATH := test:$(PYTHONPATH)
 # ********** IF YOU HAVE A NEW VERILOG FILE, ADD IT TO THE SOURCES VARIABLE
 SOURCES = src/counter.sv \
 src/cnn.sv \
-src/maxpool.sv
+src/maxpool.sv \
+src/division.sv
 
 # Test targets
 test_counter: $(SIM_BUILD_DIR)
@@ -44,6 +45,14 @@ test_maxpool: $(SIM_BUILD_DIR)
 	mv maxpool.vcd waveforms/ 2>/dev/null || true
 	@echo "Opening GTKWave..."
 	gtkwave waveforms/maxpool.vcd &
+
+test_division: $(SIM_BUILD_DIR)
+	$(IVERILOG) -o $(SIM_VVP) -s division -s dump -g2012 $(SOURCES) src/dump_division.sv
+	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_division $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
+	! grep failure results.xml
+	mv division.vcd waveforms/ 2>/dev/null || true
+	@echo "Opening GTKWave..."
+	gtkwave waveforms/division.vcd &
 
 # ============ DO NOT MODIFY BELOW THIS LINE ==============
 
