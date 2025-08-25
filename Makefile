@@ -16,7 +16,9 @@ export PYTHONPATH := test:$(PYTHONPATH)
 
 #=============== MODIFY BELOW ======================
 # ********** IF YOU HAVE A NEW VERILOG FILE, ADD IT TO THE SOURCES VARIABLE
-SOURCES = src/counter.sv
+SOURCES = src/counter.sv \
+src/cnn.sv \
+src/maxpool.sv
 
 # Test targets
 test_counter: $(SIM_BUILD_DIR)
@@ -26,6 +28,22 @@ test_counter: $(SIM_BUILD_DIR)
 	mv counter.vcd waveforms/ 2>/dev/null || true
 	@echo "Opening GTKWave..."
 	gtkwave waveforms/counter.vcd &
+
+test_cnn: $(SIM_BUILD_DIR)
+	$(IVERILOG) -o $(SIM_VVP) -s cnn -s dump -g2012 $(SOURCES) src/dump_cnn.sv
+	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_cnn $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
+	! grep failure results.xml
+	mv cnn.vcd waveforms/ 2>/dev/null || true
+	@echo "Opening GTKWave..."
+	gtkwave waveforms/cnn.vcd &
+
+test_maxpool: $(SIM_BUILD_DIR)
+	$(IVERILOG) -o $(SIM_VVP) -s maxpool -s dump -g2012 $(SOURCES) src/dump_maxpool.sv
+	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_maxpool $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
+	! grep failure results.xml
+	mv maxpool.vcd waveforms/ 2>/dev/null || true
+	@echo "Opening GTKWave..."
+	gtkwave waveforms/maxpool.vcd &
 
 # ============ DO NOT MODIFY BELOW THIS LINE ==============
 
