@@ -19,11 +19,12 @@ export PYTHONPATH := test:$(PYTHONPATH)
 SOURCES = src/counter.sv \
 src/cnn.sv \
 src/maxpool.sv \
-src/division.sv
+src/division.sv \
+src/simple_divide.sv
 
 # Test targets
 test_counter: $(SIM_BUILD_DIR)
-	$(IVERILOG) -o $(SIM_VVP) -s counter -s dump -g2012 $(SOURCES) src/dump_counter.sv
+	$(IVERILOG) -o $(SIM_VVP) -s counter -s dump -g2012 $(SOURCES) src/dump/dump_counter.sv
 	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_counter $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
 	! grep failure results.xml
 	mv counter.vcd waveforms/ 2>/dev/null || true
@@ -31,7 +32,7 @@ test_counter: $(SIM_BUILD_DIR)
 	gtkwave waveforms/counter.vcd &
 
 test_cnn: $(SIM_BUILD_DIR)
-	$(IVERILOG) -o $(SIM_VVP) -s cnn -s dump -g2012 $(SOURCES) src/dump_cnn.sv
+	$(IVERILOG) -o $(SIM_VVP) -s cnn -s dump -g2012 $(SOURCES) src/dump/dump_cnn.sv
 	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_cnn $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
 	! grep failure results.xml
 	mv cnn.vcd waveforms/ 2>/dev/null || true
@@ -39,7 +40,7 @@ test_cnn: $(SIM_BUILD_DIR)
 	gtkwave waveforms/cnn.vcd &
 
 test_maxpool: $(SIM_BUILD_DIR)
-	$(IVERILOG) -o $(SIM_VVP) -s maxpool -s dump -g2012 $(SOURCES) src/dump_maxpool.sv
+	$(IVERILOG) -o $(SIM_VVP) -s maxpool -s dump -g2012 $(SOURCES) src/dump/dump_maxpool.sv
 	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_maxpool $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
 	! grep failure results.xml
 	mv maxpool.vcd waveforms/ 2>/dev/null || true
@@ -47,12 +48,20 @@ test_maxpool: $(SIM_BUILD_DIR)
 	gtkwave waveforms/maxpool.vcd &
 
 test_division: $(SIM_BUILD_DIR)
-	$(IVERILOG) -o $(SIM_VVP) -s division -s dump -g2012 $(SOURCES) src/dump_division.sv
+	$(IVERILOG) -o $(SIM_VVP) -s division -s dump -g2012 $(SOURCES) src/dump/dump_division.sv
 	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_division $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
 	! grep failure results.xml
 	mv division.vcd waveforms/ 2>/dev/null || true
 	@echo "Opening GTKWave..."
 	gtkwave waveforms/division.vcd &
+
+test_simple_divide: $(SIM_BUILD_DIR)
+	$(IVERILOG) -o $(SIM_VVP) -s simple_divide -s dump -g2012 $(SOURCES) src/dump/dump_simple_divide.sv
+	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_simple_divide $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
+	! grep failure results.xml
+	mv simple_divide.vcd waveforms/ 2>/dev/null || true
+	@echo "Opening GTKWave..."
+	gtkwave waveforms/simple_divide.vcd &
 
 # ============ DO NOT MODIFY BELOW THIS LINE ==============
 

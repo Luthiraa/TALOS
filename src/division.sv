@@ -25,14 +25,12 @@ module division #(
     
     state_t current_state;
     
-    // Internal registers
     logic [DATA_WIDTH-1:0] work_dividend;
     logic [DATA_WIDTH-1:0] work_divisor;
     logic [DATA_WIDTH-1:0] work_quotient;
     logic [DATA_WIDTH-1:0] work_remainder;
     logic [5:0] counter;
     
-    // Combinational outputs
     assign divide_by_zero = (divisor == 0) && start;
     assign ready = (current_state == IDLE);
     
@@ -62,10 +60,7 @@ module division #(
                 end
                 
                 DIVIDE: begin
-                    // Left shift remainder and bring in next bit from dividend
                     work_remainder <= (work_remainder << 1) | ((work_dividend >> (DATA_WIDTH-1-counter)) & 1'b1);
-                    
-                    // Check if we can subtract
                     if (((work_remainder << 1) | ((work_dividend >> (DATA_WIDTH-1-counter)) & 1'b1)) >= work_divisor) begin
                         work_remainder <= ((work_remainder << 1) | ((work_dividend >> (DATA_WIDTH-1-counter)) & 1'b1)) - work_divisor;
                         work_quotient[DATA_WIDTH-1-counter] <= 1'b1;
