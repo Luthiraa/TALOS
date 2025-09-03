@@ -111,4 +111,12 @@ docs/_build/
 docs/build/
 
 # Custom additions for your project
-# Add any project-specific files/directories to ignore below
+# Add any project-specific files/directories to ignore belowENV/
+.venv/
+.env/
+test_env/
+*/.venv/
+*/venv/
+*/env/
+*/ENV/
+*/test_env/
