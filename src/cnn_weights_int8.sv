@@ -12,19 +12,23 @@ module cnn_weights_mem (
     input  logic [1:0] conv_filter_idx,    // 0-3 for 4 filters
     input  logic [3:0] conv_weight_idx,    // 0-8 for 3x3 kernel
     output logic signed [7:0] conv_weight_data,
+    output logic [3:0] conv_weight_scale,   // Right-shift amount for scaling
     
     // Conv bias memory interface  
     input  logic [1:0] conv_bias_idx,      // 0-3 for 4 biases
     output logic signed [7:0] conv_bias_data,
+    output logic [3:0] conv_bias_scale,     // Right-shift amount for scaling
     
     // FC weight memory interface
     input  logic [3:0]  fc_neuron_idx,     // 0-9 for 10 neurons
     input  logic [9:0]  fc_weight_idx,     // 0-675 for 676 inputs (reduced for synthesis)
     output logic signed [7:0] fc_weight_data,
+    output logic [3:0] fc_weight_scale,     // Right-shift amount for scaling
     
     // FC bias memory interface
     input  logic [3:0] fc_bias_idx,        // 0-9 for 10 biases
-    output logic signed [7:0] fc_bias_data
+    output logic signed [7:0] fc_bias_data,
+    output logic [3:0] fc_bias_scale        // Right-shift amount for scaling
 );
 
     // Conv Weights ROM - 4 filters x 9 weights each
@@ -40,6 +44,17 @@ module cnn_weights_mem (
         conv_weights_rom[3] = '{59, 27, -77, -11, 3, -33, -41, 6, 90};
     end
 
+    // Conv Weight Scale Factors ROM (right-shift amounts for power-of-2 scaling)
+    // Real scale: 111.95 ≈ 128 = 2^7, so quantized_weight/128 = quantized_weight >> 7
+    // Scale factor = 1 / (2^shift_amount)
+    logic [3:0] conv_weight_scales_rom [0:3];
+    initial begin
+        conv_weight_scales_rom[0] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/111.95)
+        conv_weight_scales_rom[1] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/111.95)
+        conv_weight_scales_rom[2] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/111.95)
+        conv_weight_scales_rom[3] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/111.95)
+    end
+
     // Conv Biases ROM
     logic signed [7:0] conv_biases_rom [0:3];
     initial begin
@@ -47,6 +62,16 @@ module cnn_weights_mem (
         conv_biases_rom[1] = -53;  // Filter 1 bias
         conv_biases_rom[2] = -15;  // Filter 2 bias
         conv_biases_rom[3] = 3;    // Filter 3 bias
+    end
+
+    // Conv Bias Scale Factors ROM
+    // Real scale: 239.90 ≈ 256 = 2^8, so quantized_bias/256 = quantized_bias >> 8
+    logic [3:0] conv_bias_scales_rom [0:3];
+    initial begin
+        conv_bias_scales_rom[0] = 4'd8;  // Scale = 1/256 ≈ 0.00390625 (real: 1/239.90)
+        conv_bias_scales_rom[1] = 4'd8;  // Scale = 1/256 ≈ 0.00390625 (real: 1/239.90)
+        conv_bias_scales_rom[2] = 4'd8;  // Scale = 1/256 ≈ 0.00390625 (real: 1/239.90)
+        conv_bias_scales_rom[3] = 4'd8;  // Scale = 1/256 ≈ 0.00390625 (real: 1/239.90)
     end
 
     logic signed [7:0] fc_weights_rom [0:9][0:63];
@@ -74,6 +99,22 @@ module cnn_weights_mem (
         end
     end
 
+    // FC Weight Scale Factors ROM
+    // Real scale: 127.97 ≈ 128 = 2^7, so quantized_weight/128 = quantized_weight >> 7
+    logic [3:0] fc_weight_scales_rom [0:9];
+    initial begin
+        fc_weight_scales_rom[0] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[1] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[2] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[3] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[4] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[5] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[6] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[7] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[8] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+        fc_weight_scales_rom[9] = 4'd7;  // Scale = 1/128 ≈ 0.0078125 (real: 1/127.97)
+    end
+
     // FC Biases ROM
     logic signed [7:0] fc_biases_rom [0:9];
     initial begin
@@ -89,31 +130,59 @@ module cnn_weights_mem (
         fc_biases_rom[9] = -11;  
     end
 
+    // FC Bias Scale Factors ROM
+    // Real scale: 1191.16 ≈ 1024 = 2^10, so quantized_bias/1024 = quantized_bias >> 10
+    logic [3:0] fc_bias_scales_rom [0:9];
+    initial begin
+        fc_bias_scales_rom[0] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[1] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[2] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[3] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[4] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[5] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[6] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[7] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[8] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+        fc_bias_scales_rom[9] = 4'd10;  // Scale = 1/1024 ≈ 0.0009765625 (real: 1/1191.16)
+    end
+
     // Memory access logic
     always_comb begin
         // Conv weight access
-        if (conv_filter_idx < 4 && conv_weight_idx < 9)
+        if (conv_filter_idx < 4 && conv_weight_idx < 9) begin
             conv_weight_data = conv_weights_rom[conv_filter_idx][conv_weight_idx];
-        else
+            conv_weight_scale = conv_weight_scales_rom[conv_filter_idx];
+        end else begin
             conv_weight_data = 8'sd0;
+            conv_weight_scale = 4'd0;
+        end
             
         // Conv bias access
-        if (conv_bias_idx < 4)
+        if (conv_bias_idx < 4) begin
             conv_bias_data = conv_biases_rom[conv_bias_idx];
-        else
+            conv_bias_scale = conv_bias_scales_rom[conv_bias_idx];
+        end else begin
             conv_bias_data = 8'sd0;
+            conv_bias_scale = 4'd0;
+        end
             
         // FC weight access (limited to 64 weights per neuron for synthesis)
-        if (fc_neuron_idx < 10 && fc_weight_idx < 64)
+        if (fc_neuron_idx < 10 && fc_weight_idx < 64) begin
             fc_weight_data = fc_weights_rom[fc_neuron_idx][fc_weight_idx];
-        else
+            fc_weight_scale = fc_weight_scales_rom[fc_neuron_idx];
+        end else begin
             fc_weight_data = 8'sd0;
+            fc_weight_scale = 4'd0;
+        end
             
         // FC bias access
-        if (fc_bias_idx < 10)
+        if (fc_bias_idx < 10) begin
             fc_bias_data = fc_biases_rom[fc_bias_idx];
-        else
+            fc_bias_scale = fc_bias_scales_rom[fc_bias_idx];
+        end else begin
             fc_bias_data = 8'sd0;
+            fc_bias_scale = 4'd0;
+        end
     end
 
 endmodule
