@@ -12,8 +12,8 @@ async def test_convolution_simple(dut):
     """Simple convolution test - just run and observe"""
     
     # Parameters (chose a small image for easy debugging)
-    IMG_HEIGHT = 4 
-    IMG_WIDTH = 4
+    IMG_HEIGHT = 28 
+    IMG_WIDTH = 28
     KERNEL_SIZE = 3
     
     print("="*60)
@@ -33,19 +33,14 @@ async def test_convolution_simple(dut):
     await RisingEdge(dut.clk)
     
     # Create simple test image
-    img_2d = np.array([
-        [1, 1, 0, 1],
-        [0, 1, 1, 0],
-        [0, 1, 0, 1],
-        [1, 0, 1, 1],
-    ], dtype=np.uint8)
+    img_2d = np.random.randint(0, 256, size=(IMG_HEIGHT, IMG_WIDTH), dtype=np.int32)
     
     # Create simple test kernel
     kernel_2d = np.array([
         [3, 0, 6],
         [0, 2, 0],
         [1, 0, 5]
-    ], dtype=np.uint8)
+    ], dtype=np.int32)  # Changed to int32 to match your Verilog
     
     print("INPUT IMAGE:")
     print(img_2d)
@@ -58,17 +53,19 @@ async def test_convolution_simple(dut):
     print(expected)
     print(f"Expected output shape: {expected.shape}")
     
-    # Convert to flattened format for DUT
-    img_flat = flatten_image(img_2d)
-    kernel_2d = kernel_2d.flatten()
+    # Convert to flattened format for DUT - flatten row by row
+    img_flat = img_2d.flatten()  # This gives [1,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1]
+    kernel_flat = kernel_2d.flatten()  # This gives [3,0,6,0,2,0,1,0,5]
     
-    print(f"\nFlattened image bits: {len(str(img_flat))}")
+    print(f"\nFlattened image: {img_flat}")
+    print(f"Flattened kernel: {kernel_flat}")
     
-    # Apply inputs
-    dut.img.value = img_flat
+    # Apply inputs - assign each element individually
+    for i in range(IMG_HEIGHT * IMG_WIDTH):
+        dut.img[i].value = int(img_flat[i])
     
-    for i in range(len(kernel_2d)):
-        dut.kernel[i].value = int(kernel_2d[i])
+    for i in range(KERNEL_SIZE * KERNEL_SIZE):
+        dut.kernel[i].value = int(kernel_flat[i])
     
     print("\nStarting convolution...")
     # Enable convolution
@@ -78,39 +75,16 @@ async def test_convolution_simple(dut):
     await wait_for_completion(dut, timeout_cycles=100000)
     
     print("Convolution completed!")
-    print("Check GTKWave for signal analysis.")
-    print("="*60)
-
-def flatten_image(img_2d):
-    img_height, img_width = img_2d.shape
     
-    bit_string = ""
-    # Process in normal order but APPEND
-    for i in range(img_height):
-        for j in range(img_width):
-            pixel_bits = format(int(img_2d[i, j]), '01b')
-            bit_string = pixel_bits + bit_string  # APPEND
+    # Read and display the output
+    print("\nACTUAL OUTPUT:")
+    output_size = (IMG_HEIGHT - KERNEL_SIZE + 1) * (IMG_WIDTH - KERNEL_SIZE + 1)
+    actual_output = []
+    for i in range(output_size):
+        val = dut.convimg[i].value
+        actual_output.append(val)
+        print(f"convimg[{i}] = {val}")
     
-    return BinaryValue(bit_string)
-
-# def flatten_kernel(kernel_2d):
-#     """Convert 2D kernel to flattened bit vector"""
-#     kernel_size = kernel_2d.shape[0]
-#     total_bits = kernel_size * kernel_size
-    
-#     bit_string = ""
-#     # Pack row by row, MSB first for each element
-#     for i in range(kernel_size):
-#         for j in range(kernel_size):
-#             # Handle signed values
-#             val = int(kernel_2d[i, j])
-#             if val < 0:
-#                 val = val + 256  # Two's complement for 8-bit
-#             kernel_bits = format(val, '08b')
-#             bit_string = kernel_bits + bit_string  # Prepend for little-endian
-    
-#     return BinaryValue(bit_string)
-
 
 def numpy_convolution(img, kernel):
     """Reference convolution implementation using numpy"""
@@ -120,7 +94,7 @@ def numpy_convolution(img, kernel):
     out_h = img_h - ker_h + 1
     out_w = img_w - ker_w + 1
     
-    output = np.zeros((out_h, out_w), dtype=np.int16)
+    output = np.zeros((out_h, out_w), dtype=np.int32)
     
     for i in range(out_h):
         for j in range(out_w):

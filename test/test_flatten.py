@@ -34,11 +34,7 @@ async def test_flatten(dut):
         [[1,  2,  6],
         [0,  4,  8],
         [5,  3, 11]],
-        [[1,  2,  6],
-        [0,  4,  8],
-        [5,  3, 11]]
-        
-    ], dtype=np.uint8)
+    ], dtype=np.int32)
             
     # Set input values - assign each pixel individually
     for i in range(len(img_filters)):

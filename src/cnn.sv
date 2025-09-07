@@ -2,47 +2,49 @@
 `default_nettype none
 
 module cnn #(
-    parameter IMG_HEIGHT = 4, // Currently only for testing I put the size as small
-    parameter IMG_WIDTH = 4,
+    parameter IMG_HEIGHT = 28, // Currently only for testing I put the size as small
+    parameter IMG_WIDTH = 28,
     parameter KERNEL_SIZE = 3 // Kernel size for custom CNN model 
 
 )(
     input  logic             clk,
     input  logic             rst_n,
     input  logic             enable,
-    input  reg   [IMG_HEIGHT*IMG_WIDTH-1:0] img,
-    input  logic  [31:0] kernel[KERNEL_SIZE*KERNEL_SIZE-1:0],
-    output reg [31:0] convimg[0:(IMG_HEIGHT - KERNEL_SIZE + 1)*(IMG_WIDTH - KERNEL_SIZE + 1)-1],
+    input  logic signed   [31:0]   img[IMG_HEIGHT*IMG_WIDTH-1:0],
+    input  logic signed  [31:0] kernel[KERNEL_SIZE*KERNEL_SIZE-1:0],
+    output logic signed [31:0] x[0:(IMG_HEIGHT - KERNEL_SIZE + 1)*(IMG_WIDTH - KERNEL_SIZE + 1)-1],
     output logic complete
 
 );
     // tracks current no of convolutions
-    reg [7:0] convolutions = 0;
+    localparam OUTSIZE = (IMG_HEIGHT - KERNEL_SIZE + 1) * (IMG_HEIGHT - KERNEL_SIZE + 1);
+    logic signed [31:0] convimg[0:(IMG_HEIGHT - KERNEL_SIZE + 1)*(IMG_WIDTH - KERNEL_SIZE + 1)-1];
+    logic [31:0] convolutions = 0;
 
-    reg [7:0] hor_align = 0;
-    reg [7:0] vert_align = 0;
-    reg [7:0] filter_oper = 0;
+    logic [31:0] hor_align = 0;
+    logic [31:0] vert_align = 0;
+    logic [31:0] filter_oper = 0;
 
     // total no of convolution operations
-    wire [7:0] total_conv = (IMG_HEIGHT - KERNEL_SIZE + 1) * (IMG_WIDTH - KERNEL_SIZE + 1); 
-    wire [7:0] total_filter_ops = KERNEL_SIZE * KERNEL_SIZE;
+    wire [31:0] total_conv = (IMG_HEIGHT - KERNEL_SIZE + 1) * (IMG_WIDTH - KERNEL_SIZE + 1); 
+    wire [31:0] total_filter_ops = KERNEL_SIZE * KERNEL_SIZE;
 
     // hor kernel
-    reg [7:0] kernel_hor = 0;
-    reg [7:0] kernel_vert = 0;
+    logic [31:0] kernel_hor = 0;
+    logic [31:0] kernel_vert = 0;
     
 
     always_ff @(posedge clk) begin
         if (!rst_n) begin
             complete <= '0; // active low synchronous reset
-            for (int i = 0; i < 4; i++) begin  // 4 elements for 2x2 output
-                convimg[i] <= 8'b0;
+            for (int i = 0; i < OUTSIZE; i++) begin  // 4 elements for 2x2 output
+                convimg[i] <= 0;
             end
-            kernel_hor = 0;
-            kernel_vert = 0;
-            hor_align = 0;
-            vert_align = 0;
-            filter_oper = 0;
+            kernel_hor <= 0;
+            kernel_vert <= 0;
+            hor_align <= 0;
+            vert_align <= 0;
+            filter_oper <= 0;
         end else if (enable && !complete) begin
             if (convolutions < total_conv) begin
                 if(hor_align < IMG_WIDTH - KERNEL_SIZE + 1) begin
@@ -103,17 +105,30 @@ module cnn #(
     // wire [25:0] row25 = convimg[649:624];
     // wire [25:0] row26 = convimg[675:650];
 
-    wire [7:0] row1 = convimg[0];  // All 8 bits of first element
-    wire [7:0] row2 = convimg[1];  // All 8 bits of second element
-    wire [7:0] row3 = convimg[2];  // All 8 bits of third element
-    wire [7:0] row4 = convimg[3];  // All 8 bits of fourth element
-    wire [7:0] a = vert_align * (IMG_WIDTH - KERNEL_SIZE + 1) + hor_align;
-    wire [7:0] b = convimg[vert_align * (IMG_WIDTH - KERNEL_SIZE + 1) + hor_align];
-    wire [7:0] c = kernel[kernel_vert*KERNEL_SIZE+kernel_hor];
-    wire [7:0] d = kernel[kernel_vert*KERNEL_SIZE+kernel_hor];
-    wire [7:0] e =img[(vert_align+kernel_vert)*IMG_WIDTH+kernel_hor+hor_align];
-    wire [7:0] f = (vert_align+kernel_vert)*IMG_WIDTH+kernel_hor+hor_align;
+    // wire [7:0] row1 = convimg[0];  // All 8 bits of first element
+    // wire [7:0] row2 = convimg[1];  // All 8 bits of second element
+    // wire [7:0] row3 = convimg[2];  // All 8 bits of third element
+    // wire [7:0] row4 = convimg[3];  // All 8 bits of fourth element
+    assign x = convimg;
 
-    
+
+
+    wire [31:0] row11 = convimg[0];  // All 8 bits of first element
+    wire [31:0] row21 = convimg[1];  // All 8 bits of second element
+    wire [31:0] row31 = convimg[2];  // All 8 bits of third element
+    wire [31:0] row41 = convimg[3];  // All 8 bits of fourth element
+    wire [31:0] row51 = convimg[4];  // All 8 bits of first element
+    // wire [31:0] row61 = convimg[5];  // All 8 bits of second element
+    // wire [31:0] row71 = convimg[6];  // All 8 bits of third element
+    // wire [31:0] row81 = convimg[7];  // All 8 bits of fourth element
+    // wire [31:0] row91 = convimg[8];  // All 8 bits of fourth element
+
+    // wire [31:0] a = vert_align * (IMG_WIDTH - KERNEL_SIZE + 1) + hor_align;
+    // wire [31:0] b = convimg[vert_align * (IMG_WIDTH - KERNEL_SIZE + 1) + hor_align];
+    // wire [31:0] c = kernel[kernel_vert*KERNEL_SIZE+kernel_hor];
+    // wire [31:0] d = kernel[kernel_vert*KERNEL_SIZE+kernel_hor];
+    // wire [31:0] e =img[(vert_align+kernel_vert)*IMG_WIDTH+kernel_hor+hor_align];
+    // wire [31:0] f = (vert_align+kernel_vert)*IMG_WIDTH+kernel_hor+hor_align;
+
 
 endmodule

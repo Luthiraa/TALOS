@@ -22,7 +22,8 @@ src/maxpool.sv \
 src/division.sv \
 src/simple_divide.sv \
 src/flatten.sv \
-src/neuron.sv
+src/neuron.sv \
+src/inference.sv
 
 
 # Test targets
@@ -81,6 +82,14 @@ test_neuron: $(SIM_BUILD_DIR)
 	mv neuron.vcd waveforms/ 2>/dev/null || true
 	@echo "Opening GTKWave..."
 	gtkwave waveforms/neuron.vcd &
+
+test_inference: $(SIM_BUILD_DIR)
+	$(IVERILOG) -o $(SIM_VVP) -s inference -s dump -g2012 $(SOURCES) src/dump/dump_inference.sv
+	PYTHONOPTIMIZE=$(NOASSERT) MODULE=test_inference $(VVP) -M $(COCOTB_LIBS) -m libcocotbvpi_icarus $(SIM_VVP)
+	! grep failure results.xml
+	mv inference.vcd waveforms/ 2>/dev/null || true
+	@echo "Opening GTKWave..."
+	gtkwave waveforms/inference.vcd &
 
 # ============ DO NOT MODIFY BELOW THIS LINE ==============
 

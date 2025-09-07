@@ -9,7 +9,7 @@ async def test_neuron(dut):
     """Test Neuron operation"""
     
     # Parameters
-    PREV_NEURONS = 10
+    PREV_NEURONS = 676
     
     print("="*60)
     print("FLATTEN TEST STARTING")
@@ -27,33 +27,35 @@ async def test_neuron(dut):
     dut.rst_n.value = 1
     await RisingEdge(dut.clk)
     
-    # Create test image
-    prevlayer = np.array([
-        6, 7, 8, 3, 4, -11, -12, 6, 7, 9      
-    ], dtype=np.int32)
-
-    weights = np.array([
-        1, 1, 1, 0, 1, 1, 0, 0, 0, 1     
-    ], dtype=np.int32)
-
-    bias = 2
+    # Create test input layer (676 values)
+    input_values = np.random.randint(-1000, 1000, size=PREV_NEURONS, dtype=np.int32)
+    
+    # Create test weights (676 values)
+    weight_values = np.random.randint(-100, 100, size=PREV_NEURONS, dtype=np.int32)
+    
+    # Create test bias
+    bias_value = np.random.randint(-500, 500, dtype=np.int32)
             
     # Set input values - assign each pixel individually
-    for i in range(len(prevlayer)):
-        dut.inputlayer[i].value = int(prevlayer[i])
-        dut.weights[i].value = int(weights[i])
+    for i in range(len(input_values)):
+        dut.inputlayer[i].value = int(input_values[i])
+        dut.weights[i].value = int(weight_values[i])
     
-    dut.bias.value = bias
-    dut.activation = 1
+    dut.bias.value = int(bias_value)
+    dut.activation = 0
     
     print("\nStarting flattening...")
     # Enable operation
     dut.enable.value = 1
     
     # Wait for completion
-    await wait_for_completion(dut, timeout_cycles=100)
+    await wait_for_completion(dut, timeout_cycles=200000000)
+
+    expected_sum = numpy_neuron_no_activation(input_values, weight_values, bias_value)
+    print(f"Expected output: {expected_sum}")
+
     
-    print("Max pooling completed!")
+    print("Neuron completed!")
     
     # # Read results
     # out_height = IMG_HEIGHT // KERNEL_SIZE
@@ -142,3 +144,8 @@ def print_step_by_step_maxpool(img_2d, kernel_size):
             print(f"  {region}")
             max_val = np.max(region)
             print(f"  Maximum = {max_val}")
+
+def numpy_neuron_no_activation(inputs, weights, bias):
+    """Reference neuron implementation using numpy (no activation)"""
+    weighted_sum = np.sum(inputs * weights) + bias
+    return int(weighted_sum)

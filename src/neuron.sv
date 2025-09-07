@@ -2,7 +2,7 @@
 `default_nettype none
 
 module neuron #(
-    parameter PREV_NEURONS = 10 // Size for Previous Layer Neurons
+    parameter PREV_NEURONS = 676 // Size for Previous Layer Neurons
 )(
     input  logic             clk,
     input  logic             rst_n,
@@ -15,7 +15,7 @@ module neuron #(
     output logic complete
 
 );
-    reg [31:0] operation = 0;
+    logic [31:0] operation = 0;
     logic [31:0] sum = 0;
 
     always_ff @(posedge clk) begin
