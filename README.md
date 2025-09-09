@@ -1,4 +1,4 @@
-# deepPU
+# TALOS: Tensor Accelerated Logic for On-Chip Systems
 
 ### System Dependencies
 
