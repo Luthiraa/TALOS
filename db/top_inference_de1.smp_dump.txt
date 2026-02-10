@@ -1,0 +1,24 @@
+
+State Machine - |top_inference_de1|cst
+Name cst.C_SHOW cst.C_DELAY cst.C_WAIT_COMPLETE cst.C_RUN cst.C_RELEASE_RESET cst.C_HOLD_RESET cst.C_IDLE 
+cst.C_IDLE 0 0 0 0 0 0 0 
+cst.C_HOLD_RESET 0 0 0 0 0 1 1 
+cst.C_RELEASE_RESET 0 0 0 0 1 0 1 
+cst.C_RUN 0 0 0 1 0 0 1 
+cst.C_WAIT_COMPLETE 0 0 1 0 0 0 1 
+cst.C_DELAY 0 1 0 0 0 0 1 
+cst.C_SHOW 1 0 0 0 0 0 1 
+
+State Machine - |top_inference_de1|inference:dut|st
+Name st.S_DONE st.S_GAP st.S_POOL st.S_CNN st.S_CLEAR st.S_IDLE 
+st.S_IDLE 0 0 0 0 0 0 
+st.S_CLEAR 0 0 0 0 1 1 
+st.S_CNN 0 0 0 1 0 1 
+st.S_POOL 0 0 1 0 0 1 
+st.S_GAP 0 1 0 0 0 1 
+st.S_DONE 1 0 0 0 0 1 
+
+State Machine - |top_inference_de1|inference:dut|maxpool:ma_ins|st
+Name st.ST_ACCUM 
+st.ST_TAPS 0 
+st.ST_ACCUM 1 
