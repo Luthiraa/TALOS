@@ -1,5 +1,5 @@
 Analysis & Synthesis report for top_inference_de1
-Tue Jan 27 18:43:15 2026
+Mon Feb 16 15:08:13 2026
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -66,7 +66,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Tue Jan 27 18:43:14 2026       ;
+; Analysis & Synthesis Status     ; Successful - Mon Feb 16 15:08:12 2026       ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                   ; top_inference_de1                           ;
 ; Top-level Entity Name           ; top_inference_de1                           ;
@@ -181,14 +181,14 @@ refer to the applicable agreement for further details.
 ; Number detected on machine ; 12          ;
 ; Maximum allowed            ; 12          ;
 ;                            ;             ;
-; Average used               ; 1.95        ;
+; Average used               ; 1.81        ;
 ; Maximum used               ; 12          ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processor 2            ;  41.9%      ;
-;     Processor 3            ;  41.9%      ;
-;     Processor 4            ;  10.3%      ;
+;     Processor 2            ;  35.9%      ;
+;     Processor 3            ;  35.9%      ;
+;     Processor 4            ;   9.1%      ;
 ;     Processor 5            ;   0.1%      ;
 ;     Processor 6            ;   0.1%      ;
 ;     Processor 7            ;   0.1%      ;
@@ -9217,7 +9217,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:01:15     ;
+; Top            ; 00:01:13     ;
 +----------------+--------------+
 
 
@@ -9227,7 +9227,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
-    Info: Processing started: Tue Jan 27 18:41:21 2026
+    Info: Processing started: Mon Feb 16 15:06:03 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off top_inference_de1 -c top_inference_de1
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 12 of the 12 processors detected
@@ -9239,8 +9239,6 @@ Info (12021): Found 1 design units, including 1 entities, in source file top_inf
     Info (12023): Found entity 1: top_inference_de1 File: C:/intelFPGA_lite/18.1/TALOS-complete/top_inference_de1.sv Line: 9
 Info (12021): Found 1 design units, including 1 entities, in source file maxpool.sv
     Info (12023): Found entity 1: maxpool File: C:/intelFPGA_lite/18.1/TALOS-complete/maxpool.sv Line: 705
-Warning (10275): Verilog HDL Module Instantiation warning at inference.sv(952): ignored dangling comma in List of Port Connections File: C:/intelFPGA_lite/18.1/TALOS-complete/inference.sv Line: 952
-Warning (10275): Verilog HDL Module Instantiation warning at inference.sv(996): ignored dangling comma in List of Port Connections File: C:/intelFPGA_lite/18.1/TALOS-complete/inference.sv Line: 996
 Info (12021): Found 1 design units, including 1 entities, in source file inference.sv
     Info (12023): Found entity 1: inference File: C:/intelFPGA_lite/18.1/TALOS-complete/inference.sv Line: 873
 Info (12021): Found 13 design units, including 13 entities, in source file fixedpoint.sv
@@ -9398,11 +9396,11 @@ Info (21057): Implemented 31565 device resources after synthesis - the final res
     Info (21064): Implemented 32 RAM segments
     Info (21065): Implemented 1 PLLs
     Info (21062): Implemented 9 DSP elements
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 34 warnings
-    Info: Peak virtual memory: 5318 megabytes
-    Info: Processing ended: Tue Jan 27 18:43:15 2026
-    Info: Elapsed time: 00:01:54
-    Info: Total CPU time (on all processors): 00:02:33
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 32 warnings
+    Info: Peak virtual memory: 5508 megabytes
+    Info: Processing ended: Mon Feb 16 15:08:13 2026
+    Info: Elapsed time: 00:02:10
+    Info: Total CPU time (on all processors): 00:02:44
 
 
 +------------------------------------------+

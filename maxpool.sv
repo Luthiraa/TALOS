@@ -713,14 +713,14 @@ module maxpool #(
     parameter string WEIGHTS_INIT_FILE = "src/fc_w_neuron0.memh"
     // parameter bit STREAM_ONLY = 1 // only stream and do not store
  )(
-    input  logic               clk,
-    input  logic               rst_n,
-    input  logic               enable,
-    input  logic signed [31:0] img[IMG_HEIGHT*IMG_WIDTH-1:0],
+    input  wire                clk,
+    input  wire                rst_n,
+    input  wire                enable,
+    input  wire signed [31:0]  img[IMG_HEIGHT*IMG_WIDTH-1:0],
     output logic signed [63:0] neuron0,
     output logic signed [31:0] convimg[OUT_ELEMS*4-1:0],
-    input  logic [1:0]         pass_sel,
-    input  logic               clear_accum,
+    input  wire [1:0]          pass_sel,
+    input  wire                clear_accum,
     output logic               complete
 );
 
@@ -756,7 +756,7 @@ module maxpool #(
         .q       (w_q_rom)
     );
 
-    typedef enum logic [0:0] { ST_TAPS=1'b0, ST_ACCUM=1'b1 } st_t;
+    typedef enum logic [1:0] { ST_TAPS=2'd0, ST_ADDR=2'd1, ST_ACCUM=2'd2 } st_t;
     st_t st;
 
     logic signed [31:0]  a_q;      // activation aligned with ROM output
@@ -776,13 +776,16 @@ module maxpool #(
             kernel_hor    <= 32'd0;
             kernel_vert   <= 32'd0;
 
-            running_max   <= 32'sd0;     // YOU WANT THIS LIKE THAT
+            running_max   <= 32'sh8000_0000; // safe init for max over signed values
             st            <= ST_TAPS;
             a_q           <= 32'sd0;
+            w64           <= 64'sd0;
+            a64           <= 64'sd0;
+            prod64        <= 64'sd0;
 
             neuron0       <= 64'sd0;     // FIX: don’t double-assign / don’t use 32-bit literal
             w_addr_reg    <= 10'd0;      // FIX: reset ROM address reg
-				for (int i = 0; i < OUT_ELEMS; i++) convimg[i] <= 32'sd0;
+            for (int i = 0; i < OUT_ELEMS*4; i++) convimg[i] <= 32'sd0;
 
         end else if (!enable) begin
             // Reset state when disabled to allow restart
@@ -797,9 +800,12 @@ module maxpool #(
             kernel_hor    <= 32'd0;
             kernel_vert   <= 32'd0;
 
-            running_max   <= 32'sd0;     // YOU WANT THIS LIKE THAT
+            running_max   <= 32'sh8000_0000; // safe init for max over signed values
             st            <= ST_TAPS;
             a_q           <= 32'sd0;
+            w64           <= 64'sd0;
+            a64           <= 64'sd0;
+            prod64        <= 64'sd0;
 
             w_addr_reg    <= 10'd0;      // FIX: also reset when disabled
             // NOTE: neuron0 is NOT cleared here; you control clearing via clear_accum
@@ -807,6 +813,10 @@ module maxpool #(
             // FIX: clear must work during normal operation (your inference FSM pulses it)
             neuron0 <= 64'sd0;
         end else if (!complete) begin
+            // Keep debug math signals deterministic when not accumulating.
+            w64    <= 64'sd0;
+            a64    <= 64'sd0;
+            prod64 <= 64'sd0;
             if (convolutions < TOTAL_CONV) begin
                 if (st == ST_TAPS) begin
                     if (filter_oper < TOTAL_TAPS) begin
@@ -827,17 +837,21 @@ module maxpool #(
                         // set ROM address NOW; ROM output will be valid next cycle (q is registered)
                         w_addr_reg <= (pass_sel * TOTAL_CONV) + convolutions;  // 0..675
 
-                        st <= ST_ACCUM;
-								convimg[pass_sel*TOTAL_CONV+convolutions] <= running_max;
+                        // Insert an explicit wait state for synchronous ROM latency.
+                        st <= ST_ADDR;
+                        convimg[pass_sel*TOTAL_CONV+convolutions] <= running_max;
                     end
+                end else if (st == ST_ADDR) begin
+                    // Wait one cycle so w_q_rom corresponds to w_addr_reg.
+                    st <= ST_ACCUM;
                 end else begin
                     // st == ST_ACCUM
-                    w64    = $signed(w_q_rom);
-                    a64    = $signed(a_q);
-                    prod64 = (w64 * a64) >>> 16;      // Q16.16
-                    neuron0 <= neuron0 + prod64;
+                    w64    <= $signed(w_q_rom);
+                    a64    <= $signed(a_q);
+                    prod64 <= ($signed(w_q_rom) * $signed(a_q)) >>> 16;      // Q16.16
+                    neuron0 <= neuron0 + (($signed(w_q_rom) * $signed(a_q)) >>> 16);
 
-                    running_max  <= 32'sd0;           // YOU WANT THIS LIKE THAT
+                    running_max  <= 32'sh8000_0000;   // reset max for next pooling window
                     filter_oper  <= 32'd0;
                     kernel_hor   <= 32'd0;
                     kernel_vert  <= 32'd0;

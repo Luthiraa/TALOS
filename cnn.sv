@@ -6,9 +6,9 @@ module cnn #(
     parameter IMG_WIDTH   = 28,
     parameter KERNEL_SIZE = 3
 )(
-    input  logic                       clk,
-    input  logic                       rst_n,
-    input  logic                       enable,
+    input  wire                        clk,
+    input  wire                        rst_n,
+    input  wire                        enable,
     input  logic signed [31:0]         img    [IMG_HEIGHT*IMG_WIDTH-1:0],
     input  logic signed [31:0]         kernel [KERNEL_SIZE*KERNEL_SIZE-1:0],
     output logic signed [31:0]         x      [ (IMG_HEIGHT-KERNEL_SIZE+1)*(IMG_WIDTH-KERNEL_SIZE+1)-1:0 ],
@@ -38,8 +38,18 @@ module cnn #(
     logic overflow_mul;
 
     always_comb begin
-        tap_pix = img[ (vert_align + kernel_vert)*IMG_WIDTH + (hor_align + kernel_hor) ];
-        tap_wgt = kernel[ kernel_vert*KERNEL_SIZE + kernel_hor ];
+        // Guard tap fetch so out-of-range transient counter values never create X-propagation.
+        if (filter_oper < TOTAL_TAPS &&
+            (vert_align + kernel_vert) < IMG_HEIGHT &&
+            (hor_align  + kernel_hor)  < IMG_WIDTH  &&
+            kernel_vert < KERNEL_SIZE &&
+            kernel_hor  < KERNEL_SIZE) begin
+            tap_pix = img[(vert_align + kernel_vert)*IMG_WIDTH + (hor_align + kernel_hor)];
+            tap_wgt = kernel[kernel_vert*KERNEL_SIZE + kernel_hor];
+        end else begin
+            tap_pix = 32'sd0;
+            tap_wgt = 32'sd0;
+        end
     end
 
     //    (* multstyle = "dsp" *)
@@ -85,35 +95,36 @@ module cnn #(
             conv_acc     <= 32'sd0;
         end else if (!complete_r) begin
             if (convolutions < OUT_E) begin
-					if (hor_align < IMG_WIDTH - KERNEL_SIZE + 1) begin
-							 if (filter_oper < TOTAL_TAPS) begin
-								  if (kernel_hor < KERNEL_SIZE) begin
-										filter_oper <= filter_oper + 1;
-										conv_acc    <= conv_acc + prod_q16;
-										if(convolutions == 1) begin
-											y <= conv_acc;
-										end
-										kernel_hor <= kernel_hor + 1;
-								  end
-								  else begin
-										kernel_vert <= kernel_vert + 1;
-										kernel_hor <= 0;
-								  end
-							 end
-							 else begin
-								  hor_align <= hor_align + 1;
-								  filter_oper <= 0;
-                                  conv_acc <= 0;
-								  convolutions <= convolutions + 1;
-                                  x[ vert_align*OUT_W + hor_align ] <= conv_acc;
-								  kernel_hor <= 0;
-								  kernel_vert <= 0;
-							 end
-						end 
-						else if (vert_align < IMG_WIDTH) begin
-							 vert_align <= vert_align + 1;
-							 hor_align <= 0;
-						end
+                    if (hor_align < OUT_W) begin
+                        if (filter_oper < TOTAL_TAPS) begin
+                            filter_oper <= filter_oper + 32'd1;
+                            conv_acc    <= conv_acc + prod_q16;
+                            if (convolutions == 32'd1) begin
+                                y <= conv_acc + prod_q16;
+                            end
+
+                            // Walk kernel taps in raster order.
+                            if (kernel_hor == KERNEL_SIZE-1) begin
+                                kernel_hor <= 32'd0;
+                                kernel_vert <= kernel_vert + 32'd1;
+                            end else begin
+                                kernel_hor <= kernel_hor + 32'd1;
+                            end
+                        end else begin
+                            // One full output pixel complete.
+                            x[vert_align*OUT_W + hor_align] <= conv_acc;
+                            convolutions <= convolutions + 32'd1;
+                            filter_oper  <= 32'd0;
+                            conv_acc     <= 32'sd0;
+                            kernel_hor   <= 32'd0;
+                            kernel_vert  <= 32'd0;
+                            hor_align    <= hor_align + 32'd1;
+                        end
+                    end else if (vert_align < OUT_H-1) begin
+                        // Move to next output row.
+                        vert_align <= vert_align + 32'd1;
+                        hor_align  <= 32'd0;
+                    end
 
             end else begin
                 complete_r <= 1'b1;

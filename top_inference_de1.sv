@@ -7,9 +7,9 @@
 // - LEDR: lower 10 bits of o0 (Q16.16)
 // - HEX displays: show o0 in hex (integer high 16 bits on HEX0-HEX3, frac low 16 bits on HEX4-HEX5)
 module top_inference_de1 (
-    input  logic        CLOCK_50,
-    input  logic [9:0]  SW,
-    input  logic [3:0]  KEY,
+    input  wire         CLOCK_50,
+    input  wire [9:0]   SW,
+    input  wire [3:0]   KEY,
     output logic [9:0]  LEDR,
     output logic [6:0]  HEX0,
     output logic [6:0]  HEX1,

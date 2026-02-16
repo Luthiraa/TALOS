@@ -1,5 +1,5 @@
 Flow report for top_inference_de1
-Tue Jan 27 18:54:00 2026
+Mon Feb 16 15:22:13 2026
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,7 +40,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Tue Jan 27 18:53:12 2026       ;
+; Flow Status                     ; Successful - Mon Feb 16 15:21:11 2026       ;
 ; Quartus Prime Version           ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                   ; top_inference_de1                           ;
 ; Top-level Entity Name           ; top_inference_de1                           ;
@@ -67,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 01/27/2026 18:41:22 ;
+; Start date & time ; 02/16/2026 15:06:05 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; top_inference_de1   ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 1096502932711.176955728239456          ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 1096502932711.177127236433736          ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --          ; --         ;
 ; MISC_FILE                           ; pll_10.cmp                             ; --            ; --          ; --         ;
@@ -97,11 +97,11 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:01:49     ; 1.9                     ; 5318 MB             ; 00:02:28                           ;
-; Fitter               ; 00:09:17     ; 1.6                     ; 7798 MB             ; 00:40:07                           ;
-; Assembler            ; 00:00:27     ; 1.0                     ; 5028 MB             ; 00:00:26                           ;
-; Timing Analyzer      ; 00:00:46     ; 5.4                     ; 5685 MB             ; 00:02:57                           ;
-; Total                ; 00:12:19     ; --                      ; --                  ; 00:45:58                           ;
+; Analysis & Synthesis ; 00:02:04     ; 1.8                     ; 5508 MB             ; 00:02:40                           ;
+; Fitter               ; 00:11:57     ; 1.6                     ; 7814 MB             ; 00:45:47                           ;
+; Assembler            ; 00:00:45     ; 1.0                     ; 5045 MB             ; 00:00:36                           ;
+; Timing Analyzer      ; 00:01:00     ; 5.5                     ; 5714 MB             ; 00:03:32                           ;
+; Total                ; 00:15:46     ; --                      ; --                  ; 00:52:35                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

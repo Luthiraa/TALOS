@@ -880,11 +880,11 @@ module inference #(
     parameter ACTIVATION     = 0,
     parameter LINEAR_SIZE    = ((((IMG_HEIGHT - KERNEL_SIZE + 1) - MAXPOOL_KERNEL) >> 1) + 1)
 )(
-    input  logic                   clk,
-    input  logic                   rst_n,
-    input  logic                   enable,
-    input  logic signed [31:0]     img[IMG_HEIGHT*IMG_WIDTH-1:0],
-    input  logic signed [31:0]     kernels[NO_KERNELS*KERNEL_SIZE*KERNEL_SIZE-1:0],
+    input  wire                    clk,
+    input  wire                    rst_n,
+    input  wire                    enable,
+    input  wire signed [31:0]      img[IMG_HEIGHT*IMG_WIDTH-1:0],
+    input  wire signed [31:0]      kernels[NO_KERNELS*KERNEL_SIZE*KERNEL_SIZE-1:0],
     output wire                    complete,
     output wire signed [31:0]      o0,
 	 output wire signed [31:0] y,
@@ -894,8 +894,8 @@ module inference #(
     output logic [6:0]  HEX3,
     output logic [6:0]  HEX4,
     output logic [6:0]  HEX5,
-	 input logic display_en,
-	 input logic [9:0] SW
+	 input wire display_en,
+	 input wire [9:0] SW
 );
 
     localparam CONV_SIZE       = (IMG_HEIGHT - KERNEL_SIZE + 1) * (IMG_WIDTH - KERNEL_SIZE + 1);
@@ -947,8 +947,8 @@ module inference #(
         .img(img),
         .kernel(ker_bus),
         .x(cnn_out),
-        .complete(cnn_complete),
-//		.y(y)
+        .complete(cnn_complete)
+//		,.y(y)
     );
 
     // ---------------- ONE maxpool (stream-only) ----------------
@@ -991,8 +991,8 @@ module inference #(
         .img(cnn_out),
         .convimg(outmax),
         .neuron0(neuron0),
-        .complete(mp_complete[0]),
-//		  .a(y)
+        .complete(mp_complete[0])
+//		  ,.a(y)
     );
 
         // ---------------- 4-pass FSM: CNN(pass)->maxpool(pass) x4 ----------------
