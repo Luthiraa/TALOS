@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1764707970" />
+    <testcase name="test_inference_full_pipeline" classname="test_inference" file="/Users/luthiraa/Documents/TALOS/test/test_inference.py" lineno="731" time="784979.8186831474" sim_time_ns="2312391.0" ratio_time="2.945796751665769">
+      <failure error_type="SimFailure" error_msg="Simulator shut down prematurely" />
+    </testcase>
+  </testsuite>
+</testsuites>

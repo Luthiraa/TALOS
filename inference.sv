@@ -975,7 +975,7 @@ module inference #(
     // wire               mp_done;
 
     logic signed [63:0] neuron0;
-	 logic signed [31:0] outmax [675:0];
+	 logic signed [31:0] outmax [NO_KERNELS*MAXPOOL_SIZE*MAXPOOL_SIZE-1:0];
     
     maxpool #(
         .IMG_HEIGHT(IMG_HEIGHT - KERNEL_SIZE + 1),
@@ -1158,7 +1158,10 @@ module inference #(
 
     // Signal completion at the end of the full pipeline (neuron complete), not just CNN
     assign complete = complete_r;
-    assign o0 = neuron0;
+    // Saturating cast: clamp 64-bit accumulator into signed 32-bit range
+    assign o0 = (neuron0 > 64'sh000000007FFFFFFF) ? 32'sh7FFFFFFF :
+                (neuron0 < -64'sh0000000080000000) ? 32'sh80000000 :
+                neuron0[31:0];
 	 assign y = outmax[0];
 	 
 	 function automatic [6:0] hex7(input logic [3:0] nib);
