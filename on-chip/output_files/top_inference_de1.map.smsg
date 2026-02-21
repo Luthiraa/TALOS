@@ -1,0 +1,4 @@
+Warning (10268): Verilog HDL information at fixedpoint.sv(606): always construct contains both blocking and non-blocking assignments File: C:/intelFPGA_lite/18.1/TALOS-complete/fixedpoint.sv Line: 606
+Warning (10268): Verilog HDL information at fixedpoint.sv(800): always construct contains both blocking and non-blocking assignments File: C:/intelFPGA_lite/18.1/TALOS-complete/fixedpoint.sv Line: 800
+Info (10281): Verilog HDL Declaration information at fixedpoint.sv(1043): object "ROUND" differs only in case from object "round" in the same scope File: C:/intelFPGA_lite/18.1/TALOS-complete/fixedpoint.sv Line: 1043
+Warning (10268): Verilog HDL information at fixedpoint.sv(1212): always construct contains both blocking and non-blocking assignments File: C:/intelFPGA_lite/18.1/TALOS-complete/fixedpoint.sv Line: 1212

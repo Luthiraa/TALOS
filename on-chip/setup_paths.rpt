@@ -1,0 +1,450 @@
+----------------
+; Command Info ;
+----------------
+Report Timing: Found 3 setup paths (3 violated).  Worst case slack is -1.066 
+
+Tcl Command:
+    report_timing -setup -file setup_paths.rpt -npaths 3 -detail full_path
+
+Options:
+    -setup 
+    -npaths 3 
+    -detail full_path 
+    -file {setup_paths.rpt} 
+
+Delay Model:
+    Slow 1100mV 85C Model
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Summary of Paths                                                                                                                                                             ;
++--------+---------------------------------------------+-------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; Slack  ; From Node                                   ; To Node                                         ; Launch Clock ; Latch Clock ; Relationship ; Clock Skew ; Data Delay ;
++--------+---------------------------------------------+-------------------------------------------------+--------------+-------------+--------------+------------+------------+
+; -1.066 ; inference:dut|maxpool:ma_ins|kernel_vert[1] ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ; CLOCK_50     ; CLOCK_50    ; 20.000       ; 0.175      ; 21.071     ;
+; -1.058 ; inference:dut|maxpool:ma_ins|kernel_vert[1] ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ; CLOCK_50     ; CLOCK_50    ; 20.000       ; 0.175      ; 21.063     ;
+; -1.041 ; inference:dut|maxpool:ma_ins|kernel_vert[1] ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ; CLOCK_50     ; CLOCK_50    ; 20.000       ; 0.175      ; 21.046     ;
++--------+---------------------------------------------+-------------------------------------------------+--------------+-------------+--------------+------------+------------+
+
+Path #1: Setup slack is -1.066 (VIOLATED)
+===============================================================================
++----------------------------------------------------------------------+
+; Path Summary                                                         ;
++--------------------+-------------------------------------------------+
+; Property           ; Value                                           ;
++--------------------+-------------------------------------------------+
+; From Node          ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+; To Node            ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
+; Launch Clock       ; CLOCK_50                                        ;
+; Latch Clock        ; CLOCK_50                                        ;
+; Data Arrival Time  ; 24.974                                          ;
+; Data Required Time ; 23.908                                          ;
+; Slack              ; -1.066 (VIOLATED)                               ;
++--------------------+-------------------------------------------------+
+
++------------------------------------------------------------------------------------+
+; Statistics                                                                         ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+; Property               ; Value  ; Count ; Total Delay ; % of Total ; Min   ; Max   ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+; Setup Relationship     ; 20.000 ;       ;             ;            ;       ;       ;
+; Clock Skew             ; 0.175  ;       ;             ;            ;       ;       ;
+; Data Delay             ; 21.071 ;       ;             ;            ;       ;       ;
+; Number of Logic Levels ;        ; 12    ;             ;            ;       ;       ;
+; Physical Delays        ;        ;       ;             ;            ;       ;       ;
+;  Arrival Path          ;        ;       ;             ;            ;       ;       ;
+;   Clock                ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 3     ; 2.378       ; 61         ; 0.000 ; 2.031 ;
+;    Cell                ;        ; 3     ; 1.525       ; 39         ; 0.273 ; 0.799 ;
+;   Data                 ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 25    ; 11.963      ; 57         ; 0.000 ; 2.502 ;
+;    Cell                ;        ; 26    ; 9.108       ; 43         ; 0.000 ; 3.159 ;
+;    uTco                ;        ; 1     ; 0.000       ; 0          ; 0.000 ; 0.000 ;
+;  Required Path         ;        ;       ;             ;            ;       ;       ;
+;   Clock                ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 3     ; 1.998       ; 54         ; 0.000 ; 1.670 ;
+;    Cell                ;        ; 3     ; 1.716       ; 46         ; 0.252 ; 0.799 ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+Note: Negative delays are omitted from totals when calculating percentages
+
++------------------------------------------------------------------------------------------------------------------+
+; Data Arrival Path                                                                                                ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+; Total    ; Incr    ; RF ; Type ; Fanout ; Location             ; Element                                         ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+; 0.000    ; 0.000   ;    ;      ;        ;                      ; launch edge time                                ;
+; 3.903    ; 3.903   ;    ;      ;        ;                      ; clock path                                      ;
+;   0.000  ;   0.000 ;    ;      ;        ;                      ; source latency                                  ;
+;   0.000  ;   0.000 ;    ;      ; 1      ; PIN_AF14             ; CLOCK_50                                        ;
+;   0.000  ;   0.000 ; RR ; IC   ; 1      ; IOIBUF_X32_Y0_N1     ; CLOCK_50~input|i                                ;
+;   0.799  ;   0.799 ; RR ; CELL ; 1      ; IOIBUF_X32_Y0_N1     ; CLOCK_50~input|o                                ;
+;   1.146  ;   0.347 ; RR ; IC   ; 1      ; CLKCTRL_G6           ; CLOCK_50~inputCLKENA0|inclk                     ;
+;   1.419  ;   0.273 ; RR ; CELL ; 22289  ; CLKCTRL_G6           ; CLOCK_50~inputCLKENA0|outclk                    ;
+;   3.450  ;   2.031 ; RR ; IC   ; 1      ; FF_X57_Y4_N26        ; dut|ma_ins|kernel_vert[1]|clk                   ;
+;   3.903  ;   0.453 ; RR ; CELL ; 1      ; FF_X57_Y4_N26        ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+; 24.974   ; 21.071  ;    ;      ;        ;                      ; data path                                       ;
+;   3.903  ;   0.000 ;    ; uTco ; 1      ; FF_X57_Y4_N26        ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+;   3.903  ;   0.000 ; FF ; CELL ; 2      ; FF_X57_Y4_N26        ; dut|ma_ins|kernel_vert[1]|q                     ;
+;   4.528  ;   0.625 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N0    ; dut|ma_ins|Add0~1|datac                         ;
+;   5.217  ;   0.689 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N0    ; dut|ma_ins|Add0~1|cout                          ;
+;   5.217  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N3    ; dut|ma_ins|Add0~5|cin                           ;
+;   5.217  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N3    ; dut|ma_ins|Add0~5|cout                          ;
+;   5.217  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N6    ; dut|ma_ins|Add0~9|cin                           ;
+;   5.259  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N6    ; dut|ma_ins|Add0~9|cout                          ;
+;   5.259  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N9    ; dut|ma_ins|Add0~13|cin                          ;
+;   5.259  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N9    ; dut|ma_ins|Add0~13|cout                         ;
+;   5.259  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N12   ; dut|ma_ins|Add0~17|cin                          ;
+;   5.301  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N12   ; dut|ma_ins|Add0~17|cout                         ;
+;   5.301  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N15   ; dut|ma_ins|Add0~21|cin                          ;
+;   5.301  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N15   ; dut|ma_ins|Add0~21|cout                         ;
+;   5.301  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N18   ; dut|ma_ins|Add0~25|cin                          ;
+;   5.343  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N18   ; dut|ma_ins|Add0~25|cout                         ;
+;   5.343  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N21   ; dut|ma_ins|Add0~29|cin                          ;
+;   5.343  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N21   ; dut|ma_ins|Add0~29|cout                         ;
+;   5.343  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N24   ; dut|ma_ins|Add0~33|cin                          ;
+;   5.395  ;   0.052 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N24   ; dut|ma_ins|Add0~33|cout                         ;
+;   5.395  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N27   ; dut|ma_ins|Add0~37|cin                          ;
+;   5.395  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N27   ; dut|ma_ins|Add0~37|cout                         ;
+;   5.395  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N30   ; dut|ma_ins|Add0~41|cin                          ;
+;   5.498  ;   0.103 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N30   ; dut|ma_ins|Add0~41|cout                         ;
+;   5.498  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N33   ; dut|ma_ins|Add0~45|cin                          ;
+;   5.651  ;   0.153 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N33   ; dut|ma_ins|Add0~45|sumout                       ;
+;   6.654  ;   1.003 ; FF ; IC   ; 10     ; DSP_X54_Y4_N0        ; dut|ma_ins|Mult0~8|ay[12]                       ;
+;   9.813  ;   3.159 ; FF ; CELL ; 1      ; DSP_X54_Y4_N0        ; dut|ma_ins|Mult0~8|resulta[0]                   ;
+;   11.689 ;   1.876 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N0   ; dut|ma_ins|Add1~25|datad                        ;
+;   11.846 ;   0.157 ; FF ; CELL ; 1      ; LABCELL_X51_Y17_N0   ; dut|ma_ins|Add1~25|shareout                     ;
+;   11.846 ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N3   ; dut|ma_ins|Add1~29|sharein                      ;
+;   12.498 ;   0.652 ; FF ; CELL ; 1898   ; LABCELL_X51_Y17_N3   ; dut|ma_ins|Add1~29|sumout                       ;
+;   15.000 ;   2.502 ; FF ; IC   ; 1      ; LABCELL_X22_Y33_N42  ; dut|ma_ins|Mux19~49|datac                       ;
+;   15.440 ;   0.440 ; FF ; CELL ; 1      ; LABCELL_X22_Y33_N42  ; dut|ma_ins|Mux19~49|combout                     ;
+;   16.135 ;   0.695 ; FF ; IC   ; 1      ; LABCELL_X22_Y31_N51  ; dut|ma_ins|Mux19~52|dataa                       ;
+;   16.616 ;   0.481 ; FF ; CELL ; 1      ; LABCELL_X22_Y31_N51  ; dut|ma_ins|Mux19~52|combout                     ;
+;   16.828 ;   0.212 ; FF ; IC   ; 1      ; LABCELL_X22_Y31_N6   ; dut|ma_ins|Mux19~53|datac                       ;
+;   17.268 ;   0.440 ; FF ; CELL ; 1      ; LABCELL_X22_Y31_N6   ; dut|ma_ins|Mux19~53|combout                     ;
+;   19.288 ;   2.020 ; FF ; IC   ; 1      ; LABCELL_X40_Y20_N6   ; dut|ma_ins|Mux19~54|dataf                       ;
+;   19.364 ;   0.076 ; FF ; CELL ; 2      ; LABCELL_X40_Y20_N6   ; dut|ma_ins|Mux19~54|combout                     ;
+;   19.565 ;   0.201 ; FF ; IC   ; 1      ; LABCELL_X40_Y20_N48  ; dut|ma_ins|LessThan2~9|datad                    ;
+;   19.912 ;   0.347 ; FR ; CELL ; 2      ; LABCELL_X40_Y20_N48  ; dut|ma_ins|LessThan2~9|combout                  ;
+;   20.192 ;   0.280 ; RR ; IC   ; 1      ; MLABCELL_X39_Y20_N18 ; dut|ma_ins|LessThan2~16|datab                   ;
+;   20.686 ;   0.494 ; RF ; CELL ; 1      ; MLABCELL_X39_Y20_N18 ; dut|ma_ins|LessThan2~16|combout                 ;
+;   21.362 ;   0.676 ; FF ; IC   ; 1      ; LABCELL_X40_Y21_N36  ; dut|ma_ins|LessThan2~17|dataf                   ;
+;   21.444 ;   0.082 ; FR ; CELL ; 1      ; LABCELL_X40_Y21_N36  ; dut|ma_ins|LessThan2~17|combout                 ;
+;   21.664 ;   0.220 ; RR ; IC   ; 1      ; LABCELL_X40_Y21_N24  ; dut|ma_ins|LessThan2~35|datac                   ;
+;   22.092 ;   0.428 ; RF ; CELL ; 2      ; LABCELL_X40_Y21_N24  ; dut|ma_ins|LessThan2~35|combout                 ;
+;   22.290 ;   0.198 ; FF ; IC   ; 1      ; LABCELL_X40_Y21_N6   ; dut|ma_ins|running_max[3]~2|datac               ;
+;   22.733 ;   0.443 ; FF ; CELL ; 34     ; LABCELL_X40_Y21_N6   ; dut|ma_ins|running_max[3]~2|combout             ;
+;   24.188 ;   1.455 ; FF ; IC   ; 1      ; DSP_X54_Y8_N0        ; dut|ma_ins|Mult2~469|ena[0]                     ;
+;   24.974 ;   0.786 ; FF ; CELL ; 0      ; DSP_X54_Y8_N0        ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+
++--------------------------------------------------------------------------------------------------------------+
+; Data Required Path                                                                                           ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+; Total    ; Incr    ; RF ; Type ; Fanout ; Location         ; Element                                         ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+; 20.000   ; 20.000  ;    ;      ;        ;                  ; latch edge time                                 ;
+; 24.078   ; 4.078   ;    ;      ;        ;                  ; clock path                                      ;
+;   20.000 ;   0.000 ;    ;      ;        ;                  ; source latency                                  ;
+;   20.000 ;   0.000 ;    ;      ; 1      ; PIN_AF14         ; CLOCK_50                                        ;
+;   20.000 ;   0.000 ; RR ; IC   ; 1      ; IOIBUF_X32_Y0_N1 ; CLOCK_50~input|i                                ;
+;   20.799 ;   0.799 ; RR ; CELL ; 1      ; IOIBUF_X32_Y0_N1 ; CLOCK_50~input|o                                ;
+;   21.127 ;   0.328 ; RR ; IC   ; 1      ; CLKCTRL_G6       ; CLOCK_50~inputCLKENA0|inclk                     ;
+;   21.379 ;   0.252 ; RR ; CELL ; 22289  ; CLKCTRL_G6       ; CLOCK_50~inputCLKENA0|outclk                    ;
+;   23.049 ;   1.670 ; RR ; IC   ; 19     ; DSP_X54_Y8_N0    ; dut|ma_ins|Mult2~469|clk[0]                     ;
+;   23.714 ;   0.665 ; RR ; CELL ; 0      ; DSP_X54_Y8_N0    ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
+;   24.078 ;   0.364 ;    ;      ;        ;                  ; clock pessimism removed                         ;
+; 23.908   ; -0.170  ;    ;      ;        ;                  ; clock uncertainty                               ;
+; 23.908   ; 0.000   ;    ; uTsu ; 0      ; DSP_X54_Y8_N0    ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+
+----------------------------
+; Extra Fitter Information ;
+----------------------------
+HTML report is unavailable in plain text report export.
+
+
+Path #2: Setup slack is -1.058 (VIOLATED)
+===============================================================================
++----------------------------------------------------------------------+
+; Path Summary                                                         ;
++--------------------+-------------------------------------------------+
+; Property           ; Value                                           ;
++--------------------+-------------------------------------------------+
+; From Node          ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+; To Node            ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
+; Launch Clock       ; CLOCK_50                                        ;
+; Latch Clock        ; CLOCK_50                                        ;
+; Data Arrival Time  ; 24.966                                          ;
+; Data Required Time ; 23.908                                          ;
+; Slack              ; -1.058 (VIOLATED)                               ;
++--------------------+-------------------------------------------------+
+
++------------------------------------------------------------------------------------+
+; Statistics                                                                         ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+; Property               ; Value  ; Count ; Total Delay ; % of Total ; Min   ; Max   ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+; Setup Relationship     ; 20.000 ;       ;             ;            ;       ;       ;
+; Clock Skew             ; 0.175  ;       ;             ;            ;       ;       ;
+; Data Delay             ; 21.063 ;       ;             ;            ;       ;       ;
+; Number of Logic Levels ;        ; 12    ;             ;            ;       ;       ;
+; Physical Delays        ;        ;       ;             ;            ;       ;       ;
+;  Arrival Path          ;        ;       ;             ;            ;       ;       ;
+;   Clock                ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 3     ; 2.378       ; 61         ; 0.000 ; 2.031 ;
+;    Cell                ;        ; 3     ; 1.525       ; 39         ; 0.273 ; 0.799 ;
+;   Data                 ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 28    ; 11.756      ; 56         ; 0.000 ; 2.502 ;
+;    Cell                ;        ; 29    ; 9.307       ; 44         ; 0.000 ; 3.159 ;
+;    uTco                ;        ; 1     ; 0.000       ; 0          ; 0.000 ; 0.000 ;
+;  Required Path         ;        ;       ;             ;            ;       ;       ;
+;   Clock                ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 3     ; 1.998       ; 54         ; 0.000 ; 1.670 ;
+;    Cell                ;        ; 3     ; 1.716       ; 46         ; 0.252 ; 0.799 ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+Note: Negative delays are omitted from totals when calculating percentages
+
++------------------------------------------------------------------------------------------------------------------+
+; Data Arrival Path                                                                                                ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+; Total    ; Incr    ; RF ; Type ; Fanout ; Location             ; Element                                         ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+; 0.000    ; 0.000   ;    ;      ;        ;                      ; launch edge time                                ;
+; 3.903    ; 3.903   ;    ;      ;        ;                      ; clock path                                      ;
+;   0.000  ;   0.000 ;    ;      ;        ;                      ; source latency                                  ;
+;   0.000  ;   0.000 ;    ;      ; 1      ; PIN_AF14             ; CLOCK_50                                        ;
+;   0.000  ;   0.000 ; RR ; IC   ; 1      ; IOIBUF_X32_Y0_N1     ; CLOCK_50~input|i                                ;
+;   0.799  ;   0.799 ; RR ; CELL ; 1      ; IOIBUF_X32_Y0_N1     ; CLOCK_50~input|o                                ;
+;   1.146  ;   0.347 ; RR ; IC   ; 1      ; CLKCTRL_G6           ; CLOCK_50~inputCLKENA0|inclk                     ;
+;   1.419  ;   0.273 ; RR ; CELL ; 22289  ; CLKCTRL_G6           ; CLOCK_50~inputCLKENA0|outclk                    ;
+;   3.450  ;   2.031 ; RR ; IC   ; 1      ; FF_X57_Y4_N26        ; dut|ma_ins|kernel_vert[1]|clk                   ;
+;   3.903  ;   0.453 ; RR ; CELL ; 1      ; FF_X57_Y4_N26        ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+; 24.966   ; 21.063  ;    ;      ;        ;                      ; data path                                       ;
+;   3.903  ;   0.000 ;    ; uTco ; 1      ; FF_X57_Y4_N26        ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+;   3.903  ;   0.000 ; FF ; CELL ; 2      ; FF_X57_Y4_N26        ; dut|ma_ins|kernel_vert[1]|q                     ;
+;   4.528  ;   0.625 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N0    ; dut|ma_ins|Add0~1|datac                         ;
+;   5.217  ;   0.689 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N0    ; dut|ma_ins|Add0~1|cout                          ;
+;   5.217  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N3    ; dut|ma_ins|Add0~5|cin                           ;
+;   5.217  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N3    ; dut|ma_ins|Add0~5|cout                          ;
+;   5.217  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N6    ; dut|ma_ins|Add0~9|cin                           ;
+;   5.259  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N6    ; dut|ma_ins|Add0~9|cout                          ;
+;   5.259  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N9    ; dut|ma_ins|Add0~13|cin                          ;
+;   5.259  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N9    ; dut|ma_ins|Add0~13|cout                         ;
+;   5.259  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N12   ; dut|ma_ins|Add0~17|cin                          ;
+;   5.301  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N12   ; dut|ma_ins|Add0~17|cout                         ;
+;   5.301  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N15   ; dut|ma_ins|Add0~21|cin                          ;
+;   5.301  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N15   ; dut|ma_ins|Add0~21|cout                         ;
+;   5.301  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N18   ; dut|ma_ins|Add0~25|cin                          ;
+;   5.343  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N18   ; dut|ma_ins|Add0~25|cout                         ;
+;   5.343  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N21   ; dut|ma_ins|Add0~29|cin                          ;
+;   5.343  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N21   ; dut|ma_ins|Add0~29|cout                         ;
+;   5.343  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N24   ; dut|ma_ins|Add0~33|cin                          ;
+;   5.395  ;   0.052 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N24   ; dut|ma_ins|Add0~33|cout                         ;
+;   5.395  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N27   ; dut|ma_ins|Add0~37|cin                          ;
+;   5.395  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N27   ; dut|ma_ins|Add0~37|cout                         ;
+;   5.395  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N30   ; dut|ma_ins|Add0~41|cin                          ;
+;   5.498  ;   0.103 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N30   ; dut|ma_ins|Add0~41|cout                         ;
+;   5.498  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N33   ; dut|ma_ins|Add0~45|cin                          ;
+;   5.498  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N33   ; dut|ma_ins|Add0~45|cout                         ;
+;   5.498  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N36   ; dut|ma_ins|Add0~49|cin                          ;
+;   5.540  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N36   ; dut|ma_ins|Add0~49|cout                         ;
+;   5.540  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N39   ; dut|ma_ins|Add0~53|cin                          ;
+;   5.540  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N39   ; dut|ma_ins|Add0~53|cout                         ;
+;   5.540  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N42   ; dut|ma_ins|Add0~57|cin                          ;
+;   5.850  ;   0.310 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N42   ; dut|ma_ins|Add0~57|sumout                       ;
+;   6.646  ;   0.796 ; FF ; IC   ; 10     ; DSP_X54_Y4_N0        ; dut|ma_ins|Mult0~8|ay[15]                       ;
+;   9.805  ;   3.159 ; FF ; CELL ; 1      ; DSP_X54_Y4_N0        ; dut|ma_ins|Mult0~8|resulta[0]                   ;
+;   11.681 ;   1.876 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N0   ; dut|ma_ins|Add1~25|datad                        ;
+;   11.838 ;   0.157 ; FF ; CELL ; 1      ; LABCELL_X51_Y17_N0   ; dut|ma_ins|Add1~25|shareout                     ;
+;   11.838 ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N3   ; dut|ma_ins|Add1~29|sharein                      ;
+;   12.490 ;   0.652 ; FF ; CELL ; 1898   ; LABCELL_X51_Y17_N3   ; dut|ma_ins|Add1~29|sumout                       ;
+;   14.992 ;   2.502 ; FF ; IC   ; 1      ; LABCELL_X22_Y33_N42  ; dut|ma_ins|Mux19~49|datac                       ;
+;   15.432 ;   0.440 ; FF ; CELL ; 1      ; LABCELL_X22_Y33_N42  ; dut|ma_ins|Mux19~49|combout                     ;
+;   16.127 ;   0.695 ; FF ; IC   ; 1      ; LABCELL_X22_Y31_N51  ; dut|ma_ins|Mux19~52|dataa                       ;
+;   16.608 ;   0.481 ; FF ; CELL ; 1      ; LABCELL_X22_Y31_N51  ; dut|ma_ins|Mux19~52|combout                     ;
+;   16.820 ;   0.212 ; FF ; IC   ; 1      ; LABCELL_X22_Y31_N6   ; dut|ma_ins|Mux19~53|datac                       ;
+;   17.260 ;   0.440 ; FF ; CELL ; 1      ; LABCELL_X22_Y31_N6   ; dut|ma_ins|Mux19~53|combout                     ;
+;   19.280 ;   2.020 ; FF ; IC   ; 1      ; LABCELL_X40_Y20_N6   ; dut|ma_ins|Mux19~54|dataf                       ;
+;   19.356 ;   0.076 ; FF ; CELL ; 2      ; LABCELL_X40_Y20_N6   ; dut|ma_ins|Mux19~54|combout                     ;
+;   19.557 ;   0.201 ; FF ; IC   ; 1      ; LABCELL_X40_Y20_N48  ; dut|ma_ins|LessThan2~9|datad                    ;
+;   19.904 ;   0.347 ; FR ; CELL ; 2      ; LABCELL_X40_Y20_N48  ; dut|ma_ins|LessThan2~9|combout                  ;
+;   20.184 ;   0.280 ; RR ; IC   ; 1      ; MLABCELL_X39_Y20_N18 ; dut|ma_ins|LessThan2~16|datab                   ;
+;   20.678 ;   0.494 ; RF ; CELL ; 1      ; MLABCELL_X39_Y20_N18 ; dut|ma_ins|LessThan2~16|combout                 ;
+;   21.354 ;   0.676 ; FF ; IC   ; 1      ; LABCELL_X40_Y21_N36  ; dut|ma_ins|LessThan2~17|dataf                   ;
+;   21.436 ;   0.082 ; FR ; CELL ; 1      ; LABCELL_X40_Y21_N36  ; dut|ma_ins|LessThan2~17|combout                 ;
+;   21.656 ;   0.220 ; RR ; IC   ; 1      ; LABCELL_X40_Y21_N24  ; dut|ma_ins|LessThan2~35|datac                   ;
+;   22.084 ;   0.428 ; RF ; CELL ; 2      ; LABCELL_X40_Y21_N24  ; dut|ma_ins|LessThan2~35|combout                 ;
+;   22.282 ;   0.198 ; FF ; IC   ; 1      ; LABCELL_X40_Y21_N6   ; dut|ma_ins|running_max[3]~2|datac               ;
+;   22.725 ;   0.443 ; FF ; CELL ; 34     ; LABCELL_X40_Y21_N6   ; dut|ma_ins|running_max[3]~2|combout             ;
+;   24.180 ;   1.455 ; FF ; IC   ; 1      ; DSP_X54_Y8_N0        ; dut|ma_ins|Mult2~469|ena[0]                     ;
+;   24.966 ;   0.786 ; FF ; CELL ; 0      ; DSP_X54_Y8_N0        ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+
++--------------------------------------------------------------------------------------------------------------+
+; Data Required Path                                                                                           ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+; Total    ; Incr    ; RF ; Type ; Fanout ; Location         ; Element                                         ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+; 20.000   ; 20.000  ;    ;      ;        ;                  ; latch edge time                                 ;
+; 24.078   ; 4.078   ;    ;      ;        ;                  ; clock path                                      ;
+;   20.000 ;   0.000 ;    ;      ;        ;                  ; source latency                                  ;
+;   20.000 ;   0.000 ;    ;      ; 1      ; PIN_AF14         ; CLOCK_50                                        ;
+;   20.000 ;   0.000 ; RR ; IC   ; 1      ; IOIBUF_X32_Y0_N1 ; CLOCK_50~input|i                                ;
+;   20.799 ;   0.799 ; RR ; CELL ; 1      ; IOIBUF_X32_Y0_N1 ; CLOCK_50~input|o                                ;
+;   21.127 ;   0.328 ; RR ; IC   ; 1      ; CLKCTRL_G6       ; CLOCK_50~inputCLKENA0|inclk                     ;
+;   21.379 ;   0.252 ; RR ; CELL ; 22289  ; CLKCTRL_G6       ; CLOCK_50~inputCLKENA0|outclk                    ;
+;   23.049 ;   1.670 ; RR ; IC   ; 19     ; DSP_X54_Y8_N0    ; dut|ma_ins|Mult2~469|clk[0]                     ;
+;   23.714 ;   0.665 ; RR ; CELL ; 0      ; DSP_X54_Y8_N0    ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
+;   24.078 ;   0.364 ;    ;      ;        ;                  ; clock pessimism removed                         ;
+; 23.908   ; -0.170  ;    ;      ;        ;                  ; clock uncertainty                               ;
+; 23.908   ; 0.000   ;    ; uTsu ; 0      ; DSP_X54_Y8_N0    ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+
+----------------------------
+; Extra Fitter Information ;
+----------------------------
+HTML report is unavailable in plain text report export.
+
+
+Path #3: Setup slack is -1.041 (VIOLATED)
+===============================================================================
++----------------------------------------------------------------------+
+; Path Summary                                                         ;
++--------------------+-------------------------------------------------+
+; Property           ; Value                                           ;
++--------------------+-------------------------------------------------+
+; From Node          ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+; To Node            ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
+; Launch Clock       ; CLOCK_50                                        ;
+; Latch Clock        ; CLOCK_50                                        ;
+; Data Arrival Time  ; 24.949                                          ;
+; Data Required Time ; 23.908                                          ;
+; Slack              ; -1.041 (VIOLATED)                               ;
++--------------------+-------------------------------------------------+
+
++------------------------------------------------------------------------------------+
+; Statistics                                                                         ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+; Property               ; Value  ; Count ; Total Delay ; % of Total ; Min   ; Max   ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+; Setup Relationship     ; 20.000 ;       ;             ;            ;       ;       ;
+; Clock Skew             ; 0.175  ;       ;             ;            ;       ;       ;
+; Data Delay             ; 21.046 ;       ;             ;            ;       ;       ;
+; Number of Logic Levels ;        ; 12    ;             ;            ;       ;       ;
+; Physical Delays        ;        ;       ;             ;            ;       ;       ;
+;  Arrival Path          ;        ;       ;             ;            ;       ;       ;
+;   Clock                ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 3     ; 2.378       ; 61         ; 0.000 ; 2.031 ;
+;    Cell                ;        ; 3     ; 1.525       ; 39         ; 0.273 ; 0.799 ;
+;   Data                 ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 28    ; 12.020      ; 57         ; 0.000 ; 2.354 ;
+;    Cell                ;        ; 29    ; 9.026       ; 43         ; 0.000 ; 3.159 ;
+;    uTco                ;        ; 1     ; 0.000       ; 0          ; 0.000 ; 0.000 ;
+;  Required Path         ;        ;       ;             ;            ;       ;       ;
+;   Clock                ;        ;       ;             ;            ;       ;       ;
+;    IC                  ;        ; 3     ; 1.998       ; 54         ; 0.000 ; 1.670 ;
+;    Cell                ;        ; 3     ; 1.716       ; 46         ; 0.252 ; 0.799 ;
++------------------------+--------+-------+-------------+------------+-------+-------+
+Note: Negative delays are omitted from totals when calculating percentages
+
++------------------------------------------------------------------------------------------------------------------+
+; Data Arrival Path                                                                                                ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+; Total    ; Incr    ; RF ; Type ; Fanout ; Location             ; Element                                         ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+; 0.000    ; 0.000   ;    ;      ;        ;                      ; launch edge time                                ;
+; 3.903    ; 3.903   ;    ;      ;        ;                      ; clock path                                      ;
+;   0.000  ;   0.000 ;    ;      ;        ;                      ; source latency                                  ;
+;   0.000  ;   0.000 ;    ;      ; 1      ; PIN_AF14             ; CLOCK_50                                        ;
+;   0.000  ;   0.000 ; RR ; IC   ; 1      ; IOIBUF_X32_Y0_N1     ; CLOCK_50~input|i                                ;
+;   0.799  ;   0.799 ; RR ; CELL ; 1      ; IOIBUF_X32_Y0_N1     ; CLOCK_50~input|o                                ;
+;   1.146  ;   0.347 ; RR ; IC   ; 1      ; CLKCTRL_G6           ; CLOCK_50~inputCLKENA0|inclk                     ;
+;   1.419  ;   0.273 ; RR ; CELL ; 22289  ; CLKCTRL_G6           ; CLOCK_50~inputCLKENA0|outclk                    ;
+;   3.450  ;   2.031 ; RR ; IC   ; 1      ; FF_X57_Y4_N26        ; dut|ma_ins|kernel_vert[1]|clk                   ;
+;   3.903  ;   0.453 ; RR ; CELL ; 1      ; FF_X57_Y4_N26        ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+; 24.949   ; 21.046  ;    ;      ;        ;                      ; data path                                       ;
+;   3.903  ;   0.000 ;    ; uTco ; 1      ; FF_X57_Y4_N26        ; inference:dut|maxpool:ma_ins|kernel_vert[1]     ;
+;   3.903  ;   0.000 ; FF ; CELL ; 2      ; FF_X57_Y4_N26        ; dut|ma_ins|kernel_vert[1]|q                     ;
+;   4.528  ;   0.625 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N0    ; dut|ma_ins|Add0~1|datac                         ;
+;   5.217  ;   0.689 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N0    ; dut|ma_ins|Add0~1|cout                          ;
+;   5.217  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N3    ; dut|ma_ins|Add0~5|cin                           ;
+;   5.217  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N3    ; dut|ma_ins|Add0~5|cout                          ;
+;   5.217  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N6    ; dut|ma_ins|Add0~9|cin                           ;
+;   5.259  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N6    ; dut|ma_ins|Add0~9|cout                          ;
+;   5.259  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N9    ; dut|ma_ins|Add0~13|cin                          ;
+;   5.259  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N9    ; dut|ma_ins|Add0~13|cout                         ;
+;   5.259  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N12   ; dut|ma_ins|Add0~17|cin                          ;
+;   5.301  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N12   ; dut|ma_ins|Add0~17|cout                         ;
+;   5.301  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N15   ; dut|ma_ins|Add0~21|cin                          ;
+;   5.301  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N15   ; dut|ma_ins|Add0~21|cout                         ;
+;   5.301  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N18   ; dut|ma_ins|Add0~25|cin                          ;
+;   5.343  ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N18   ; dut|ma_ins|Add0~25|cout                         ;
+;   5.343  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N21   ; dut|ma_ins|Add0~29|cin                          ;
+;   5.343  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N21   ; dut|ma_ins|Add0~29|cout                         ;
+;   5.343  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N24   ; dut|ma_ins|Add0~33|cin                          ;
+;   5.395  ;   0.052 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N24   ; dut|ma_ins|Add0~33|cout                         ;
+;   5.395  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N27   ; dut|ma_ins|Add0~37|cin                          ;
+;   5.395  ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N27   ; dut|ma_ins|Add0~37|cout                         ;
+;   5.395  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N30   ; dut|ma_ins|Add0~41|cin                          ;
+;   5.498  ;   0.103 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N30   ; dut|ma_ins|Add0~41|cout                         ;
+;   5.498  ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X55_Y4_N33   ; dut|ma_ins|Add0~45|cin                          ;
+;   5.651  ;   0.153 ; FF ; CELL ; 1      ; LABCELL_X55_Y4_N33   ; dut|ma_ins|Add0~45|sumout                       ;
+;   6.654  ;   1.003 ; FF ; IC   ; 10     ; DSP_X54_Y4_N0        ; dut|ma_ins|Mult0~8|ay[12]                       ;
+;   9.813  ;   3.159 ; FF ; CELL ; 1      ; DSP_X54_Y4_N0        ; dut|ma_ins|Mult0~8|resulta[0]                   ;
+;   11.689 ;   1.876 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N0   ; dut|ma_ins|Add1~25|datad                        ;
+;   11.846 ;   0.157 ; FF ; CELL ; 1      ; LABCELL_X51_Y17_N0   ; dut|ma_ins|Add1~25|shareout                     ;
+;   11.846 ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N3   ; dut|ma_ins|Add1~29|sharein                      ;
+;   12.299 ;   0.453 ; FF ; CELL ; 1      ; LABCELL_X51_Y17_N3   ; dut|ma_ins|Add1~29|cout                         ;
+;   12.299 ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N6   ; dut|ma_ins|Add1~33|cin                          ;
+;   12.341 ;   0.042 ; FF ; CELL ; 1      ; LABCELL_X51_Y17_N6   ; dut|ma_ins|Add1~33|cout                         ;
+;   12.341 ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N9   ; dut|ma_ins|Add1~37|cin                          ;
+;   12.341 ;   0.000 ; FF ; CELL ; 1      ; LABCELL_X51_Y17_N9   ; dut|ma_ins|Add1~37|cout                         ;
+;   12.341 ;   0.000 ; FF ; IC   ; 2      ; LABCELL_X51_Y17_N12  ; dut|ma_ins|Add1~21|cin                          ;
+;   12.653 ;   0.312 ; FF ; CELL ; 1738   ; LABCELL_X51_Y17_N12  ; dut|ma_ins|Add1~21|sumout                       ;
+;   15.007 ;   2.354 ; FF ; IC   ; 1      ; LABCELL_X80_Y23_N54  ; dut|ma_ins|Mux20~78|dataf                       ;
+;   15.080 ;   0.073 ; FF ; CELL ; 1      ; LABCELL_X80_Y23_N54  ; dut|ma_ins|Mux20~78|combout                     ;
+;   16.366 ;   1.286 ; FF ; IC   ; 1      ; LABCELL_X66_Y20_N48  ; dut|ma_ins|Mux20~80|dataf                       ;
+;   16.440 ;   0.074 ; FF ; CELL ; 1      ; LABCELL_X66_Y20_N48  ; dut|ma_ins|Mux20~80|combout                     ;
+;   16.654 ;   0.214 ; FF ; IC   ; 1      ; LABCELL_X66_Y20_N36  ; dut|ma_ins|Mux20~96|datac                       ;
+;   17.094 ;   0.440 ; FF ; CELL ; 1      ; LABCELL_X66_Y20_N36  ; dut|ma_ins|Mux20~96|combout                     ;
+;   18.167 ;   1.073 ; FF ; IC   ; 1      ; LABCELL_X45_Y20_N6   ; dut|ma_ins|Mux20~139|datac                      ;
+;   18.607 ;   0.440 ; FF ; CELL ; 1      ; LABCELL_X45_Y20_N6   ; dut|ma_ins|Mux20~139|combout                    ;
+;   19.428 ;   0.821 ; FF ; IC   ; 1      ; MLABCELL_X39_Y20_N0  ; dut|ma_ins|Mux20~225|datac                      ;
+;   19.843 ;   0.415 ; FF ; CELL ; 3      ; MLABCELL_X39_Y20_N0  ; dut|ma_ins|Mux20~225|combout                    ;
+;   20.074 ;   0.231 ; FF ; IC   ; 1      ; MLABCELL_X39_Y20_N36 ; dut|ma_ins|LessThan2~11|datac                   ;
+;   20.519 ;   0.445 ; FF ; CELL ; 2      ; MLABCELL_X39_Y20_N36 ; dut|ma_ins|LessThan2~11|combout                 ;
+;   20.746 ;   0.227 ; FF ; IC   ; 1      ; MLABCELL_X39_Y20_N54 ; dut|ma_ins|LessThan2~12|datae                   ;
+;   20.930 ;   0.184 ; FF ; CELL ; 1      ; MLABCELL_X39_Y20_N54 ; dut|ma_ins|LessThan2~12|combout                 ;
+;   21.587 ;   0.657 ; FF ; IC   ; 1      ; LABCELL_X40_Y21_N24  ; dut|ma_ins|LessThan2~35|datab                   ;
+;   22.067 ;   0.480 ; FF ; CELL ; 2      ; LABCELL_X40_Y21_N24  ; dut|ma_ins|LessThan2~35|combout                 ;
+;   22.265 ;   0.198 ; FF ; IC   ; 1      ; LABCELL_X40_Y21_N6   ; dut|ma_ins|running_max[3]~2|datac               ;
+;   22.708 ;   0.443 ; FF ; CELL ; 34     ; LABCELL_X40_Y21_N6   ; dut|ma_ins|running_max[3]~2|combout             ;
+;   24.163 ;   1.455 ; FF ; IC   ; 1      ; DSP_X54_Y8_N0        ; dut|ma_ins|Mult2~469|ena[0]                     ;
+;   24.949 ;   0.786 ; FF ; CELL ; 0      ; DSP_X54_Y8_N0        ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
++----------+---------+----+------+--------+----------------------+-------------------------------------------------+
+
++--------------------------------------------------------------------------------------------------------------+
+; Data Required Path                                                                                           ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+; Total    ; Incr    ; RF ; Type ; Fanout ; Location         ; Element                                         ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+; 20.000   ; 20.000  ;    ;      ;        ;                  ; latch edge time                                 ;
+; 24.078   ; 4.078   ;    ;      ;        ;                  ; clock path                                      ;
+;   20.000 ;   0.000 ;    ;      ;        ;                  ; source latency                                  ;
+;   20.000 ;   0.000 ;    ;      ; 1      ; PIN_AF14         ; CLOCK_50                                        ;
+;   20.000 ;   0.000 ; RR ; IC   ; 1      ; IOIBUF_X32_Y0_N1 ; CLOCK_50~input|i                                ;
+;   20.799 ;   0.799 ; RR ; CELL ; 1      ; IOIBUF_X32_Y0_N1 ; CLOCK_50~input|o                                ;
+;   21.127 ;   0.328 ; RR ; IC   ; 1      ; CLKCTRL_G6       ; CLOCK_50~inputCLKENA0|inclk                     ;
+;   21.379 ;   0.252 ; RR ; CELL ; 22289  ; CLKCTRL_G6       ; CLOCK_50~inputCLKENA0|outclk                    ;
+;   23.049 ;   1.670 ; RR ; IC   ; 19     ; DSP_X54_Y8_N0    ; dut|ma_ins|Mult2~469|clk[0]                     ;
+;   23.714 ;   0.665 ; RR ; CELL ; 0      ; DSP_X54_Y8_N0    ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
+;   24.078 ;   0.364 ;    ;      ;        ;                  ; clock pessimism removed                         ;
+; 23.908   ; -0.170  ;    ;      ;        ;                  ; clock uncertainty                               ;
+; 23.908   ; 0.000   ;    ; uTsu ; 0      ; DSP_X54_Y8_N0    ; inference:dut|maxpool:ma_ins|Mult2~469|ENA_DFF0 ;
++----------+---------+----+------+--------+------------------+-------------------------------------------------+
+
+----------------------------
+; Extra Fitter Information ;
+----------------------------
+HTML report is unavailable in plain text report export.
+
+
