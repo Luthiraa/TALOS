@@ -59,30 +59,4 @@ module flatten #(
         end
     end
 
-    // wire [31:0] a = cnnmaps[0][0];
-    // wire [31:0] b = cnnmaps[0][1];
-    // wire [31:0] c = cnnmaps[0][2];
-    // wire [31:0] d = cnnmaps[0][3];
-    // wire [31:0] e = cnnmaps[0][4];
-    // wire [31:0] f = cnnmaps[0][5];
-
-    wire [31:0] a = flat[0];
-    wire [31:0] b = flat[1];
-    wire [31:0] c = flat[2];
-    wire [31:0] d = flat[3];
-    wire [31:0] e = flat[4];
-    wire [31:0] f = flat[5];
-    wire [31:0] g = flat[6];
-    wire [31:0] h = flat[7];
-    wire [31:0] i = flat[8];
-    wire [31:0] k = flat[9];
-    wire [31:0] l = flat[10];
-    wire [31:0] m = flat[11];
-    wire [31:0] n = flat[12];
-    wire [31:0] o = flat[13];
-    wire [31:0] p = flat[14];
-    wire [31:0] q = flat[15];
-    wire [31:0] r = flat[16];
-    wire [31:0] s = flat[17];
-
 endmodule

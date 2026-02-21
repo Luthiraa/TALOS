@@ -79,44 +79,4 @@ module maxpool #(
         end
     end
 
-    // wire [25:0] row1 = convimg[25:0];
-    // wire [25:0] row2 = convimg[51:26];
-    // wire [25:0] row3 = convimg[77:52];
-    // wire [25:0] row4 = convimg[103:78];
-    // wire [25:0] row5 = convimg[129:104];
-    // wire [25:0] row6 = convimg[155:130];
-    // wire [25:0] row7 = convimg[181:156];
-    // wire [25:0] row8 = convimg[207:182];
-    // wire [25:0] row9 = convimg[233:208];
-    // wire [25:0] row10 = convimg[259:234];
-    // wire [25:0] row11 = convimg[285:260];
-    // wire [25:0] row12 = convimg[311:286];
-    // wire [25:0] row13 = convimg[337:312];
-    // wire [25:0] row14 = convimg[363:338];
-    // wire [25:0] row15 = convimg[389:364];
-    // wire [25:0] row16 = convimg[415:390];
-    // wire [25:0] row17 = convimg[441:416];
-    // wire [25:0] row18 = convimg[467:442];
-    // wire [25:0] row19 = convimg[493:468];
-    // wire [25:0] row20 = convimg[519:494];
-    // wire [25:0] row21 = convimg[545:520];
-    // wire [25:0] row22 = convimg[571:546];
-    // wire [25:0] row23 = convimg[597:572];
-    // wire [25:0] row24 = convimg[623:598];
-    // wire [25:0] row25 = convimg[649:624];
-    // wire [25:0] row26 = convimg[675:650];
-
-    wire [7:0] row1 = convimg[0];  // All 8 bits of first element
-    wire [7:0] row2 = convimg[1];  // All 8 bits of second element
-    wire [7:0] row3 = convimg[2];  // All 8 bits of third element
-    wire [7:0] row4 = convimg[3];  // All 8 bits of fourth element
-    // wire [7:0] a = vert_align * (IMG_WIDTH - KERNEL_SIZE + 1) + hor_align;
-    // wire [7:0] b = convimg[vert_align * (IMG_WIDTH - KERNEL_SIZE + 1) + hor_align];
-    // wire [7:0] c = kernel[kernel_vert*KERNEL_SIZE+kernel_hor];
-    // wire [7:0] d = kernel[kernel_vert*KERNEL_SIZE+kernel_hor];
-    // wire [7:0] e =img[(vert_align+kernel_vert)*IMG_WIDTH+kernel_hor+hor_align];
-    // wire [7:0] f = (vert_align+kernel_vert)*IMG_WIDTH+kernel_hor+hor_align;
-
-    
-
 endmodule

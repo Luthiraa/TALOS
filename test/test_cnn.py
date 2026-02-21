@@ -1,4 +1,3 @@
-# Import important libraries
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer
@@ -6,12 +5,10 @@ from cocotb.binary import BinaryValue
 import numpy as np
 import random
 
-# Simple convolution testbench
 @cocotb.test()
 async def test_convolution_simple(dut):
     """Simple convolution test - just run and observe"""
     
-    # Parameters (chose a small image for easy debugging)
     IMG_HEIGHT = 4 
     IMG_WIDTH = 4
     KERNEL_SIZE = 3
@@ -20,11 +17,8 @@ async def test_convolution_simple(dut):
     print("CONVOLUTION TEST STARTING")
     print("="*60)
     
-    # Start clock
     cocotb.start_soon(Clock(dut.clk, 1, units="ns").start())
     
-    # Reset
-    print("Resetting DUT...")
     dut.rst_n.value = 0
     dut.enable.value = 0
     await RisingEdge(dut.clk)
@@ -32,7 +26,7 @@ async def test_convolution_simple(dut):
     dut.rst_n.value = 1
     await RisingEdge(dut.clk)
     
-    # Create simple test image
+    # Test image
     img_2d = np.array([
         [1, 1, 0, 1],
         [0, 1, 1, 0],
@@ -40,7 +34,7 @@ async def test_convolution_simple(dut):
         [1, 0, 1, 1],
     ], dtype=np.uint8)
     
-    # Create simple test kernel
+    # Test kernel
     kernel_2d = np.array([
         [3, 0, 6],
         [0, 2, 0],
@@ -52,29 +46,28 @@ async def test_convolution_simple(dut):
     print("\nKERNEL:")
     print(kernel_2d)
     
-    # Calculate expected output for comparison
+    # Expected output
     expected = numpy_convolution(img_2d, kernel_2d)
     print("\nEXPECTED OUTPUT:")
     print(expected)
     print(f"Expected output shape: {expected.shape}")
     
-    # Convert to flattened format for DUT
+    # Convert to flattened format
     img_flat = flatten_image(img_2d)
     kernel_2d = kernel_2d.flatten()
     
     print(f"\nFlattened image bits: {len(str(img_flat))}")
     
-    # Apply inputs
+
     dut.img.value = img_flat
     
     for i in range(len(kernel_2d)):
         dut.kernel[i].value = int(kernel_2d[i])
     
-    print("\nStarting convolution...")
     # Enable convolution
     dut.enable.value = 1
     
-    # Wait for completion
+
     await wait_for_completion(dut, timeout_cycles=100000)
     
     print("Convolution completed!")
@@ -93,23 +86,6 @@ def flatten_image(img_2d):
     
     return BinaryValue(bit_string)
 
-# def flatten_kernel(kernel_2d):
-#     """Convert 2D kernel to flattened bit vector"""
-#     kernel_size = kernel_2d.shape[0]
-#     total_bits = kernel_size * kernel_size
-    
-#     bit_string = ""
-#     # Pack row by row, MSB first for each element
-#     for i in range(kernel_size):
-#         for j in range(kernel_size):
-#             # Handle signed values
-#             val = int(kernel_2d[i, j])
-#             if val < 0:
-#                 val = val + 256  # Two's complement for 8-bit
-#             kernel_bits = format(val, '08b')
-#             bit_string = kernel_bits + bit_string  # Prepend for little-endian
-    
-#     return BinaryValue(bit_string)
 
 
 def numpy_convolution(img, kernel):

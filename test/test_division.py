@@ -1,4 +1,3 @@
-# Import important libraries
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer
@@ -6,7 +5,6 @@ from cocotb.binary import BinaryValue
 import numpy as np
 import random
 
-# Helper function to wait for division completion
 async def wait_for_division(dut):
     """Wait for division to complete and return results"""
     while not dut.valid.value:
@@ -16,7 +14,6 @@ async def wait_for_division(dut):
     remainder = int(dut.remainder.value)
     return quotient, remainder
 
-# Basic division test
 @cocotb.test()
 async def test_division_basic(dut):
     """Basic division test with simple cases"""
@@ -80,7 +77,6 @@ async def test_division_basic(dut):
     print("ALL BASIC DIVISION TESTS PASSED!")
     print("="*60)
 
-# Division by zero test
 @cocotb.test()
 async def test_division_by_zero(dut):
     """Test division by zero detection"""
@@ -120,7 +116,6 @@ async def test_division_by_zero(dut):
     
     print("\nDIVISION BY ZERO TEST PASSED!")
 
-# Random test cases
 @cocotb.test()
 async def test_division_random(dut):
     """Random division test cases for robustness"""
@@ -172,7 +167,6 @@ async def test_division_random(dut):
     
     print(f"\n✓ ALL {num_tests} RANDOM TESTS PASSED!")
 
-# Performance test
 @cocotb.test()
 async def test_division_timing(dut):
     """Test division timing and ready/valid handshaking"""
