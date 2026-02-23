@@ -15,17 +15,18 @@ TALOS implements a minimal CNN pipeline in hardware:
 
 ```
 .
-├── src/                        # RTL modules (simulation/cocotb)
-│   ├── cnn.sv                  # Convolution engine
-│   ├── maxpool.sv              # Max pooling
-│   ├── flatten.sv              # Flatten layer
-│   ├── neuron.sv               # FC neuron with MAC + activation
-│   ├── relu.sv                 # ReLU activation
-│   ├── division.sv             # Multi-cycle integer divider
-│   ├── simple_divide.sv        # Single-cycle divider
-│   ├── cnn_weights_int8.sv     # Quantized weight ROM
-│   └── dump/                   # VCD dump modules
-├── test/                       # Cocotb testbenches
+├── src/                        
+│   ├── cnn.sv                  
+│   ├── maxpool.sv              
+│   ├── flatten.sv              
+│   ├── neuron.sv               
+│   ├── relu.sv                 
+│   ├── division.sv             
+│   ├── simple_divide.sv        
+│   ├── cnn_weights_int8.sv     
+│   └── dump/                   
+├── test/
+├── cocotb/                       
 │   ├── test_cnn.py
 │   ├── test_maxpool.py
 │   ├── test_flatten.py
@@ -33,18 +34,20 @@ TALOS implements a minimal CNN pipeline in hardware:
 │   ├── test_division.py
 │   ├── test_simple_divide.py
 │   └── test_counter.py
-├── on-chip/                    # DE1-SoC FPGA implementation (Quartus)
-│   ├── cnn.sv                  # On-chip convolution (fixed-point multiply)
-│   ├── inference.sv            # Full inference pipeline
-│   ├── maxpool.sv              # On-chip max pooling
-│   ├── fixedpoint.sv           # Q16.16 fixed-point library
-│   ├── top_inference_de1.sv    # DE1-SoC top-level wrapper
-│   ├── fc_w_rom*.v             # FC weight ROMs
-│   ├── fc_w_neuron*.mif        # Weight memory init files
-│   ├── output_files/           # Quartus compilation output
-│   └── *.qsf / *.qpf          # Quartus project files
-├── model/                      # Python model & weight quantization
-├── Makefile                    # Build and test automation
+├── tcl/
+│   ├── testbench.tcl.     # testbench for model-sim
+├── on-chip/                     
+│   ├── cnn.sv                  
+│   ├── inference.sv            
+│   ├── maxpool.sv              
+│   ├── fixedpoint.sv           
+│   ├── top_inference_de1.sv    
+│   ├── fc_w_rom*.v             
+│   ├── fc_w_neuron*.mif        
+│   ├── output_files/           
+│   └── *.qsf / *.qpf          
+├── model/                      
+├── Makefile                    
 └── README.md
 ```
 
