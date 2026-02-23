@@ -14,8 +14,7 @@ export COCOTB_REDUCED_LOG_FMT=1
 export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 export PYTHONPATH := test:$(PYTHONPATH)
 
-#=============== MODIFY BELOW ======================
-# ********** IF YOU HAVE A NEW VERILOG FILE, ADD IT TO THE SOURCES VARIABLE
+
 SOURCES = src/counter.sv \
 src/cnn.sv \
 src/maxpool.sv \

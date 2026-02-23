@@ -1,0 +1,71 @@
+# vsim -c -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver top_inference_de1 -do "force -freeze sim:/top_inference_de1/CLOCK_50 0 0ns, 1 10ns -repeat 20ns; force sim:/top_inference_de1/SW 10'b0000000000; run 2 us; force sim:/top_inference_de1/SW 10'b0000000010; run 10 us; force sim:/top_inference_de1/SW 10'b0000000011; run 20 ms; puts [examine sim:/top_inference_de1/dut/st]; puts [examine sim:/top_inference_de1/o0]; quit -f" 
+# Start time: 18:22:12 on Feb 18,2026
+# Loading sv_std.std
+# Loading work.top_inference_de1
+# Loading work.pll_10
+# Loading work.pll_10_0002
+# Loading altera_lnsim_ver.altera_lnsim_functions
+# Loading altera_lnsim_ver.altera_pll
+# Loading work.inference
+# Loading work.cnn
+# Loading work.fxp_mul
+# Loading work.fxp_zoom
+# Loading work.maxpool
+# Loading work.fc_w_rom
+# Loading altera_mf_ver.altsyncram
+# Loading altera_lnsim_ver.dps_extra_kick
+# Loading altera_lnsim_ver.dprio_init
+# Loading altera_lnsim_ver.altera_generic_pll_functions
+# Loading altera_lnsim_ver.generic_pll
+# Loading altera_mf_ver.altsyncram_body
+# Loading altera_mf_ver.ALTERA_DEVICE_FAMILIES
+# Loading altera_mf_ver.ALTERA_MF_MEMORY_INITIALIZATION
+# ** Warning: (vsim-3017) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Too few port connections. Expected 26, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /top_inference_de1/u_pll/pll_10_inst/altera_pll_i File: C:/intelFPGA_lite/18.1/quartus/eda/sim_lib/altera_lnsim.sv
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'refclk1'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'phase_en'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'updn'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'num_phase_shifts'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'scanclk'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'cntsel'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'reconfig_to_pll'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'extswitch'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'adjpllin'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'cclk'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'phase_done'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'reconfig_from_pll'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'activeclk'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'clkbad'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'phout'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'lvds_clk'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'loaden'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'extclk_out'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'cascade_out'.
+# ** Warning: (vsim-3722) C:/intelFPGA_lite/18.1/TALOS-complete/pll_10/pll_10_0002.v(78): [TFMPC] - Missing connection for port 'zdbfbclk'.
+# ** Warning: (vsim-3017) inference.sv(943): [TFMPC] - Too few port connections. Expected 8, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /top_inference_de1/dut/cnn_ins File: C:/intelFPGA_lite/18.1/TALOS-complete/cnn.sv
+# ** Warning: (vsim-3722) inference.sv(943): [TFMPC] - Missing connection for port 'y'.
+# force -freeze sim:/top_inference_de1/CLOCK_50 0 0ns, 1 10ns -repeat 20ns
+#  force sim:/top_inference_de1/SW 10'b0000000000
+#  run 2 us
+# Info: =================================================
+# Info:           Generic PLL Summary
+# Info: =================================================
+# Time scale of (top_inference_de1.u_pll.pll_10_inst.altera_pll_i.new_model.gpll.no_need_to_gen) is  1ps /  1ps
+# Info: hierarchical_name = top_inference_de1.u_pll.pll_10_inst.altera_pll_i.new_model.gpll.no_need_to_gen
+# Info: reference_clock_frequency = 50.0 MHz
+# Info: output_clock_frequency = 10 MHZ
+# Info: phase_shift = 0 ps
+# Info: duty_cycle = 50
+# Info: sim_additional_refclk_cycles_to_lock = 0
+# Info: output_clock_high_period = 50000.000000
+# Info: output_clock_low_period = 50000.000000
+#  force sim:/top_inference_de1/SW 10'b0000000010
+#  run 10 us
+#  force sim:/top_inference_de1/SW 10'b0000000011
+#  run 20 ms
+#  puts [examine sim:/top_inference_de1/dut/st]
+#  puts [examine sim:/top_inference_de1/o0]
+#  quit -f
+# End time: 18:22:32 on Feb 18,2026, Elapsed time: 0:00:20
+# Errors: 0, Warnings: 23
